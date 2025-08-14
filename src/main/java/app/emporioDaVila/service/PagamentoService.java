@@ -4,6 +4,8 @@ import app.emporioDaVila.entity.Pagamento;
 import app.emporioDaVila.repository.PagamentoRepository;
 import jakarta.persistence.EntityNotFoundException;
 
+import java.util.List;
+
 public class PagamentoService {
 
     public PagamentoService(PagamentoRepository pagamentoRepository) {
@@ -11,6 +13,15 @@ public class PagamentoService {
     }
 
     private final PagamentoRepository pagamentoRepository;
+
+    public String save(Pagamento pagamento) {
+        this.pagamentoRepository.save(pagamento);
+        return "Pagamento salvo com sucesso";
+    }
+
+    public List<Pagamento> findAll() {
+        return pagamentoRepository.findAll();
+    }
 
     public Pagamento findById(Integer id) {
         return pagamentoRepository.findById(id)

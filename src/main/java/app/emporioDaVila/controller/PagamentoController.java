@@ -4,15 +4,36 @@ import app.emporioDaVila.entity.Pagamento;
 import app.emporioDaVila.service.PagamentoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 public class PagamentoController {
 
     private final PagamentoService pagamentoService;
 
     public PagamentoController(PagamentoService pagamentoService) { this.pagamentoService = pagamentoService; }
+
+
+    @PostMapping("/save")
+    public ResponseEntity<String> save(@RequestBody Pagamento pagamento) {
+        try {
+            String result = this.pagamentoService.save(pagamento);
+            return new ResponseEntity<String>(result, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<String>("Deu algo errado!", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findAll")
+    public ResponseEntity<List<Pagamento>> findAll() {
+        try {
+            var result = pagamentoService.findAll();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping("/findById/{id}")
     public ResponseEntity<Pagamento> findById(@PathVariable Integer id) {
