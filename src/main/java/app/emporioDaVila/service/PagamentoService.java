@@ -28,6 +28,24 @@ public class PagamentoService {
                 .orElseThrow(() -> new EntityNotFoundException());
     }
 
+    public Pagamento update(Integer id, Pagamento pagamento) {
+        Pagamento update = findById(id);
+
+        if (pagamento.getTipo() != null) {
+            update.setTipo(pagamento.getTipo());
+        }
+
+        if (pagamento.getQuantidade() != 0) {
+            update.setQuantidade(pagamento.getQuantidade());
+        }
+
+        if (pagamento.getEstado() != false) {
+            update.setEstado(pagamento.getEstado());
+        }
+
+        return pagamentoRepository.save(update);
+    }
+
     public void delete(Integer id) {
         Pagamento delete = findById(id);
         pagamentoRepository.delete(delete);

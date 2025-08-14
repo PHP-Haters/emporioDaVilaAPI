@@ -45,6 +45,16 @@ public class PagamentoController {
         }
     }
 
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Pagamento> update(@PathVariable Integer id, @RequestBody Pagamento pagamentoUpdate) {
+        try {
+            var result = pagamentoService.update(id, pagamentoUpdate);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @DeleteMapping("delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         try {
