@@ -16,4 +16,9 @@ public class PagamentoService {
         return pagamentoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException());
     }
+
+    public void delete(Integer id) {
+        Pagamento delete = findById(id);
+        pagamentoRepository.delete(delete);
+    }
 }

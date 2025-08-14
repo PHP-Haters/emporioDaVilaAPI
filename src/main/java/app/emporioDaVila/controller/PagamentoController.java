@@ -4,6 +4,7 @@ import app.emporioDaVila.entity.Pagamento;
 import app.emporioDaVila.service.PagamentoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -20,6 +21,16 @@ public class PagamentoController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
+        try {
+            pagamentoService.delete(id);
+            return ResponseEntity.noContent().build(); // status 204
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().build(); // status 400
         }
     }
 }
