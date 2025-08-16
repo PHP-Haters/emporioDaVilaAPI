@@ -1,6 +1,5 @@
 package app.emporioDaVila.service;
 
-import app.emporioDaVila.entity.Pagamento;
 import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;

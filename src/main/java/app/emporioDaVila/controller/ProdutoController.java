@@ -1,7 +1,7 @@
 package app.emporioDaVila.controller;
 
-import app.emporioDaVila.entity.Pagamento;
-import app.emporioDaVila.service.PagamentoService;
+import app.emporioDaVila.entity.Produto;
+import app.emporioDaVila.service.ProdutoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pagamento")
-public class PagamentoController {
+@RequestMapping("/produto")
+public class ProdutoController {
 
     @Autowired
-    private PagamentoService pagamentoService;
+    private ProdutoService produtoService;
 
     @PostMapping
-    public ResponseEntity<String> save(@RequestBody @Valid Pagamento pagamento) {
+    public ResponseEntity<String> save(@RequestBody @Valid Produto produto) {
         try {
-            String result = this.pagamentoService.save(pagamento);
+            String result = this.produtoService.save(produto);
             return new ResponseEntity<String>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<String>("Deu algo errado!", HttpStatus.BAD_REQUEST);
@@ -28,9 +28,9 @@ public class PagamentoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Pagamento>> findAll() {
+    public ResponseEntity<List<Produto>> findAll() {
         try {
-            var result = pagamentoService.findAll();
+            var result = produtoService.findAll();
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -38,9 +38,9 @@ public class PagamentoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Pagamento> findById(@PathVariable Integer id) {
+    public ResponseEntity<Produto> findById(@PathVariable Integer id) {
         try {
-            var result = pagamentoService.findById(id);
+            var result = produtoService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -48,10 +48,10 @@ public class PagamentoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid Pagamento pagamentoUpdate) {
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid Produto produtoUpdate) {
         try {
-            pagamentoService.update(id, pagamentoUpdate);
-            return new ResponseEntity<>("Pagamento atualizado com sucesso.", HttpStatus.OK);
+            produtoService.update(id, produtoUpdate);
+            return new ResponseEntity<>("Produto atualizado com sucesso.", HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -60,7 +60,7 @@ public class PagamentoController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         try {
-            pagamentoService.delete(id);
+            produtoService.delete(id);
             return ResponseEntity.noContent().build(); // status 204
         } catch (Exception ex) {
             return ResponseEntity.badRequest().build(); // status 400

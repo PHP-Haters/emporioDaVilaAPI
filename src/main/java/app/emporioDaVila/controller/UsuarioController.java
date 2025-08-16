@@ -1,13 +1,11 @@
 package app.emporioDaVila.controller;
 
-import app.emporioDaVila.entity.Pagamento;
 import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,7 +49,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable Long id, @RequestBody @Valid Usuario usuarioAtualizado) {
         try {
-            var result = usuarioService.update(id, usuarioAtualizado);
+            usuarioService.update(id, usuarioAtualizado);
             return new ResponseEntity<>("Usuário atualizado com sucesso.", HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
