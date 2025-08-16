@@ -2,21 +2,23 @@ package app.emporioDaVila.controller;
 
 import app.emporioDaVila.entity.Pagamento;
 import app.emporioDaVila.service.PagamentoService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
+@RequestMapping("/pagamento")
 public class PagamentoController {
 
-    private final PagamentoService pagamentoService;
+    @Autowired
+    private PagamentoService pagamentoService;
 
-    public PagamentoController(PagamentoService pagamentoService) { this.pagamentoService = pagamentoService; }
-
-
-    @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestBody Pagamento pagamento) {
+    @PostMapping
+    public ResponseEntity<String> save(@RequestBody @Valid Pagamento pagamento) {
         try {
             String result = this.pagamentoService.save(pagamento);
             return new ResponseEntity<String>(result, HttpStatus.OK);
@@ -25,7 +27,7 @@ public class PagamentoController {
         }
     }
 
-    @GetMapping("/findAll")
+    @GetMapping
     public ResponseEntity<List<Pagamento>> findAll() {
         try {
             var result = pagamentoService.findAll();
@@ -35,7 +37,7 @@ public class PagamentoController {
         }
     }
 
-    @GetMapping("/findById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Pagamento> findById(@PathVariable Integer id) {
         try {
             var result = pagamentoService.findById(id);
@@ -45,17 +47,17 @@ public class PagamentoController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Pagamento> update(@PathVariable Integer id, @RequestBody Pagamento pagamentoUpdate) {
+    @PutMapping("/{id}")
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid Pagamento pagamentoUpdate) {
         try {
             var result = pagamentoService.update(id, pagamentoUpdate);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>("Pagamento atualizado com sucesso.", HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         try {
             pagamentoService.delete(id);

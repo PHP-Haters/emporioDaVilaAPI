@@ -3,16 +3,16 @@ package app.emporioDaVila.service;
 import app.emporioDaVila.entity.Pagamento;
 import app.emporioDaVila.repository.PagamentoRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PagamentoService {
 
-    public PagamentoService(PagamentoRepository pagamentoRepository) {
-        this.pagamentoRepository = pagamentoRepository;
-    }
-
-    private final PagamentoRepository pagamentoRepository;
+    @Autowired
+    private PagamentoRepository pagamentoRepository;
 
     public String save(Pagamento pagamento) {
         this.pagamentoRepository.save(pagamento);
@@ -28,19 +28,19 @@ public class PagamentoService {
                 .orElseThrow(() -> new EntityNotFoundException());
     }
 
-    public Pagamento update(Integer id, Pagamento pagamento) {
+    public Pagamento update(Integer id, Pagamento novoPagamento) {
         Pagamento update = findById(id);
 
-        if (pagamento.getTipo() != null) {
-            update.setTipo(pagamento.getTipo());
+        if (novoPagamento.getTipo() != null) {
+            update.setTipo(novoPagamento.getTipo());
         }
 
-        if (pagamento.getQuantidade() != 0) {
-            update.setQuantidade(pagamento.getQuantidade());
+        if (novoPagamento.getQuantidade() != 0) {
+            update.setQuantidade(novoPagamento.getQuantidade());
         }
 
-        if (pagamento.getEstado() != false) {
-            update.setEstado(pagamento.getEstado());
+        if (novoPagamento.getFinalizado() != false) {
+            update.setFinalizado(novoPagamento.getFinalizado());
         }
 
         return pagamentoRepository.save(update);
