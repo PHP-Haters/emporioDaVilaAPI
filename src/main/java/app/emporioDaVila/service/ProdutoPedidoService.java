@@ -35,9 +35,9 @@ public class ProdutoPedidoService {
             update.setProduto(novoProdutoPedido.getProduto());
         }
 
-        // if (novoProdutoPedido.getPedido() != null) {
-        //     update.setPedido(novoProdutoPedido.getPedido());
-        // }
+         if (novoProdutoPedido.getPedido() != null) {
+             update.setPedido(novoProdutoPedido.getPedido());
+        }
 
         return produtoPedidoRepository.save(update);
     }
