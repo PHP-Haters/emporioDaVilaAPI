@@ -29,19 +29,11 @@ public class PedidoService {
                 .orElseThrow(() -> new EntityNotFoundException());
     }
 
-    public Pedido update(Integer id, Pedido novoPedido) {
+    public Pedido updateState(Integer id, Pedido novoPedido) {
         Pedido update = findById(id);
 
-        if (novoPedido.getTipo() != null) {
-            update.setTipo(novoPedido.getTipo());
-        }
-
-        if (novoPedido.getQuantidade() != 0) {
-            update.setQuantidade(novoPedido.getQuantidade());
-        }
-
-        if (novoPedido.getFinalizado() != false) {
-            update.setFinalizado(novoPedido.getFinalizado());
+        if (novoPedido.getEstado() != false) {
+            update.setEstado(novoPedido.getEstado());
         }
 
         return pedidoRepository.save(update);

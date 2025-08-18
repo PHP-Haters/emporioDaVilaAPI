@@ -46,9 +46,9 @@ public class PedidoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid Pedido pedidoUpdate) {
+    public ResponseEntity<String> updateState(@PathVariable Integer id, @RequestBody @Valid Pedido pedidoUpdate) {
         try {
-            pedidoService.update(id, pedidoUpdate);
+            pedidoService.updateState(id, pedidoUpdate);
             return new ResponseEntity<>("Pedido atualizado com sucesso.", HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
