@@ -1,5 +1,6 @@
 package app.emporioDaVila.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import java.util.List;
 public class Pedido {
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("pedido") // ignora o campo "pedido" dentro de ProdutoPedido
     private List<ProdutoPedido> produtoPedidos = new ArrayList<>();
 
     @Id

@@ -2,6 +2,8 @@ package app.emporioDaVila.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -34,6 +36,7 @@ public class Produto {
     private String categoria;
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("produto") // ignora o campo "produto" dentro de ProdutoPedido
     private List<ProdutoPedido> produtosPedidos = new ArrayList<>();
 
     @PrePersist
