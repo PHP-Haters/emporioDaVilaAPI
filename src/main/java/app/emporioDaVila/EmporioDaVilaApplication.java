@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EmporioDaVilaApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EmporioDaVilaApplication.class, args);
+        SpringApplication.run(EmporioDaVilaApplication.class, args);
 	}
 
 }

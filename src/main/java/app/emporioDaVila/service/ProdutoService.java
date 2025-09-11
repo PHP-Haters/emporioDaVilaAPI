@@ -1,11 +1,12 @@
 package app.emporioDaVila.service;
 
+import app.emporioDaVila.ExceptionHandlers.GenericExceptions;
 import app.emporioDaVila.entity.Produto;
 import app.emporioDaVila.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -15,17 +16,36 @@ public class ProdutoService {
     private ProdutoRepository produtoRepository;
 
     public String save(Produto produto) {
-        this.produtoRepository.save(produto);
-        return "Produto salvo com sucesso";
+        try {
+            produtoRepository.save(produto);
+            return "Produto salvo com sucesso";
+        }
+        catch (DataIntegrityViolationException ex) {
+            throw new GenericExceptions.InvalidData(
+                    "Dados inválidos para o produto: " + ex.getMessage()
+            );
+        }
+        catch (Exception ex) {
+            throw new GenericExceptions.General(
+                    "Erro inesperado ao salvar o produto: " + ex.getMessage()
+            );
+        }
     }
 
     public List<Produto> findAll() {
-        return produtoRepository.findAll();
+        List<Produto> produtos = produtoRepository.findAll();
+        if (produtos.isEmpty()) {
+            throw new GenericExceptions.General(
+                    "Não existem produtos cadastrados."
+            );
+        } else {
+            return produtos;
+        }
     }
 
     public Produto findById(Integer id) {
         return produtoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
+                .orElseThrow(() -> new GenericExceptions.NotFound("Produto não encontrado."));
     }
 
     public Produto update(Integer id, Produto novoProduto) {

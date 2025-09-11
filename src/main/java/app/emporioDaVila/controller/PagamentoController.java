@@ -10,60 +10,41 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/pagamento")
 public class PagamentoController {
 
     @Autowired
-    private PagamentoService pagamentoService;
+    private final PagamentoService pagamentoService = new  PagamentoService();
 
     @PostMapping
     public ResponseEntity<String> save(@RequestBody @Valid Pagamento pagamento) {
-        try {
-            String result = this.pagamentoService.save(pagamento);
-            return new ResponseEntity<String>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<String>("Deu algo errado!", HttpStatus.BAD_REQUEST);
-        }
+        String result = this.pagamentoService.save(pagamento);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<Pagamento>> findAll() {
-        try {
-            var result = pagamentoService.findAll();
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        var result = pagamentoService.findAll();
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Pagamento> findById(@PathVariable Integer id) {
-        try {
-            var result = pagamentoService.findById(id);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        var result = pagamentoService.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid Pagamento pagamentoUpdate) {
-        try {
-            pagamentoService.update(id, pagamentoUpdate);
-            return new ResponseEntity<>("Pagamento atualizado com sucesso.", HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        pagamentoService.update(id, pagamentoUpdate);
+        return new ResponseEntity<>("Pagamento atualizado com sucesso.", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        try {
-            pagamentoService.delete(id);
-            return ResponseEntity.noContent().build(); // status 204
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().build(); // status 400
-        }
+        pagamentoService.delete(id);
+        return ResponseEntity.noContent().build(); // status 204
     }
 }

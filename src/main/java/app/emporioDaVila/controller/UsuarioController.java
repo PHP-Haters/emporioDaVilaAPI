@@ -10,59 +10,40 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
     @Autowired
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService = new UsuarioService();
 
     @PostMapping
     public ResponseEntity<String> saveUsuario(@RequestBody @Valid Usuario usuario){
-        try {
-            String response = this.usuarioService.saveUsuario(usuario);
-            return new ResponseEntity<String>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<String>("Deu algo errado!", HttpStatus.BAD_REQUEST);
-        }
+        String response = this.usuarioService.saveUsuario(usuario);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<Usuario>> findAll() {
-        try {
-            var result = usuarioService.findAll();
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        var result = usuarioService.findAll();
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> findById(@PathVariable Long id) {
-        try {
             var result = usuarioService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable Long id, @RequestBody @Valid Usuario usuarioAtualizado) {
-        try {
-            usuarioService.update(id, usuarioAtualizado);
-            return new ResponseEntity<>("Usuário atualizado com sucesso.", HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        usuarioService.update(id, usuarioAtualizado);
+        return new ResponseEntity<>("Usuário atualizado com sucesso.", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        try {
-            usuarioService.delete(id);
-            return ResponseEntity.noContent().build(); // status 204
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().build(); // status 400
-        }
+        usuarioService.delete(id);
+        return ResponseEntity.noContent().build(); // status 204
     }
 }

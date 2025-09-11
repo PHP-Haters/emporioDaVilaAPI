@@ -10,58 +10,39 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class PedidoController {
 
     @Autowired
-    private PedidoService pedidoService;
+    private final PedidoService pedidoService =  new PedidoService();
 
     @PostMapping
     public ResponseEntity<String> save(@RequestBody @Valid Pedido pedido) {
-        try {
-            String result = this.pedidoService.save(pedido);
-            return new ResponseEntity<String>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<String>("Deu algo errado!", HttpStatus.BAD_REQUEST);
-        }
+        String result = this.pedidoService.save(pedido);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<Pedido>> findAll() {
-        try {
-            var result = pedidoService.findAll();
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        var result = pedidoService.findAll();
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Pedido> findById(@PathVariable Integer id) {
-        try {
-            var result = pedidoService.findById(id);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        var result = pedidoService.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateState(@PathVariable Integer id, @RequestBody @Valid Pedido pedidoUpdate) {
-        try {
-            pedidoService.updateState(id, pedidoUpdate);
-            return new ResponseEntity<>("Pedido atualizado com sucesso.", HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid Pedido pedidoUpdate) {
+        pedidoService.updateState(id, pedidoUpdate);
+        return new ResponseEntity<>("Pedido atualizado com sucesso.", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        try {
-            pedidoService.delete(id);
-            return ResponseEntity.noContent().build(); // status 204
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().build(); // status 400
-        }
+        pedidoService.delete(id);
+        return ResponseEntity.noContent().build(); // status 204
     }
 }

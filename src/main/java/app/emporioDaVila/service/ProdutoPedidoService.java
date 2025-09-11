@@ -1,9 +1,12 @@
 package app.emporioDaVila.service;
 
+import app.emporioDaVila.ExceptionHandlers.GenericExceptions;
+import app.emporioDaVila.entity.Produto;
 import app.emporioDaVila.entity.ProdutoPedido;
 import app.emporioDaVila.repository.ProdutoPedidoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,17 +18,36 @@ public class ProdutoPedidoService {
     private ProdutoPedidoRepository produtoPedidoRepository;
 
     public String save(ProdutoPedido produtoPedido) {
-        this.produtoPedidoRepository.save(produtoPedido);
-        return "ProdutoPedido salvo com sucesso";
+        try {
+            this.produtoPedidoRepository.save(produtoPedido);
+            return "Pedido do produto salvo com sucesso";
+        }
+        catch (DataIntegrityViolationException ex) {
+            throw new GenericExceptions.InvalidData(
+                    "Dados inválidos para o pedido do produto: " + ex.getMessage()
+            );
+        }
+        catch (Exception ex) {
+            throw new GenericExceptions.General(
+                    "Erro inesperado ao salvar o pedido do produto: " + ex.getMessage()
+            );
+        }
     }
 
     public List<ProdutoPedido> findAll() {
-        return produtoPedidoRepository.findAll();
+        List<ProdutoPedido> produtoPedidos = produtoPedidoRepository.findAll();
+        if (produtoPedidos.isEmpty()) {
+            throw new GenericExceptions.General(
+                    "Não existem produtos deste pedido cadastrados."
+            );
+        } else {
+            return produtoPedidos;
+        }
     }
 
     public ProdutoPedido findById(Integer id) {
         return produtoPedidoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException());
+                .orElseThrow(() -> new GenericExceptions.NotFound("Produto do pedido não encontrado."));
     }
 
     public ProdutoPedido update(Integer id, ProdutoPedido novoProdutoPedido) {

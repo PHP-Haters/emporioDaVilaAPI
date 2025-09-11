@@ -10,60 +10,41 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/produto")
 public class ProdutoController {
 
     @Autowired
-    private ProdutoService produtoService;
+    private final ProdutoService produtoService = new  ProdutoService();
 
     @PostMapping
     public ResponseEntity<String> save(@RequestBody @Valid Produto produto) {
-        try {
             String result = this.produtoService.save(produto);
-            return new ResponseEntity<String>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<String>("Deu algo errado!", HttpStatus.BAD_REQUEST);
-        }
+            return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<Produto>> findAll() {
-        try {
-            var result = produtoService.findAll();
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        var result = produtoService.findAll();
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Produto> findById(@PathVariable Integer id) {
-        try {
             var result = produtoService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid Produto produtoUpdate) {
-        try {
             produtoService.update(id, produtoUpdate);
             return new ResponseEntity<>("Produto atualizado com sucesso.", HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        try {
-            produtoService.delete(id);
-            return ResponseEntity.noContent().build(); // status 204
-        } catch (Exception ex) {
-            return ResponseEntity.badRequest().build(); // status 400
-        }
+        produtoService.delete(id);
+        return ResponseEntity.noContent().build(); // status 204
     }
 }

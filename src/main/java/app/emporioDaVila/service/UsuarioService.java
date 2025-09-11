@@ -1,9 +1,12 @@
 package app.emporioDaVila.service;
 
+import app.emporioDaVila.ExceptionHandlers.GenericExceptions;
+import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,22 +18,36 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     public String saveUsuario(Usuario novoUsuario){
-        this.usuarioRepository.save(novoUsuario);
-        return "Usuário salvo com sucesso.";
+        try {
+            this.usuarioRepository.save(novoUsuario);
+            return "Usuário salvo com sucesso.";
+        }
+        catch (DataIntegrityViolationException ex) {
+            throw new GenericExceptions.InvalidData(
+                    "Dados inválidos para o usuário: " + ex.getMessage()
+            );
+        }
+        catch (Exception ex) {
+            throw new GenericExceptions.General(
+                    "Erro inesperado ao salvar usuário: " + ex.getMessage()
+            );
+        }
     }
 
     public List<Usuario> findAll() {
-        return usuarioRepository.findAll();
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        if (usuarios.isEmpty()) {
+            throw new GenericExceptions.General(
+                    "Não existem usuarios cadastrados."
+            );
+        } else {
+            return usuarios;
+        }
     }
 
     public Usuario findById(Long id) {
-        Optional<Usuario> usuarioEncontrado = usuarioRepository.findById(id);
-
-        if (!usuarioEncontrado.isPresent()) {
-            throw new RuntimeException("Usuário não encontrado");
-        }
-
-        return usuarioEncontrado.get();
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new GenericExceptions.NotFound("Usuário não encontrado."));
     }
 
     public Usuario update(Long id, Usuario novoUsuario) {
