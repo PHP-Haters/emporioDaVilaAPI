@@ -1,6 +1,7 @@
 package app.emporioDaVila.service;
 
 import app.emporioDaVila.ExceptionHandlers.GenericExceptions;
+import app.emporioDaVila.entity.Enum.Categoria;
 import app.emporioDaVila.entity.Produto;
 import app.emporioDaVila.repository.ProdutoRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -46,6 +47,17 @@ public class ProdutoService {
     public Produto findById(Integer id) {
         return produtoRepository.findById(id)
                 .orElseThrow(() -> new GenericExceptions.NotFound("Produto não encontrado."));
+    }
+
+    public List<Produto> findByCategoria(Categoria categoria) {
+        List<Produto> produtos = produtoRepository.findAllByCategoria(categoria);
+        if (produtos.isEmpty()) {
+            throw new GenericExceptions.NotFound (
+                    "Não existem produtos dessa categoria cadastrados."
+            );
+        } else {
+            return produtos;
+        }
     }
 
     public Produto update(Integer id, Produto novoProduto) {

@@ -1,5 +1,6 @@
 package app.emporioDaVila.controller;
 
+import app.emporioDaVila.entity.Enum.Categoria;
 import app.emporioDaVila.entity.Produto;
 import app.emporioDaVila.service.ProdutoService;
 import jakarta.validation.Valid;
@@ -35,6 +36,13 @@ public class ProdutoController {
             var result = produtoService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @GetMapping("/categoria/{categoria}")
+    public ResponseEntity<List<Produto>> findByCategoria(@PathVariable Categoria categoria) {
+        var result = produtoService.findByCategoria(categoria);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid Produto produtoUpdate) {
