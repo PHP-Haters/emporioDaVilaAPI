@@ -37,6 +37,12 @@ public class ProdutoController {
             return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @GetMapping("/categorias")
+    public ResponseEntity<List<Categoria>> getCategorias(){
+        var result = produtoService.listCategorias();
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @GetMapping("/categoria/{categoria}")
     public ResponseEntity<List<Produto>> findByCategoria(@PathVariable Categoria categoria) {
         var result = produtoService.findByCategoria(categoria);
