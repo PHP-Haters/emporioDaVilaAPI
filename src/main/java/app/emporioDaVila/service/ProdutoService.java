@@ -4,9 +4,9 @@ import app.emporioDaVila.ExceptionHandlers.GenericExceptions;
 import app.emporioDaVila.entity.Enum.Categoria;
 import app.emporioDaVila.entity.Produto;
 import app.emporioDaVila.repository.ProdutoRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class ProdutoService {
     }
 
     public List<Produto> findAll() {
-        List<Produto> produtos = produtoRepository.findAll();
+        List<Produto> produtos = produtoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         if (produtos.isEmpty()) {
             throw new GenericExceptions.General(
                     "Não existem produtos cadastrados."
