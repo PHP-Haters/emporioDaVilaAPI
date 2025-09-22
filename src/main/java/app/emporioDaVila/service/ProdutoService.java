@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -47,6 +49,10 @@ public class ProdutoService {
     public Produto findById(Integer id) {
         return produtoRepository.findById(id)
                 .orElseThrow(() -> new GenericExceptions.NotFound("Produto não encontrado."));
+    }
+
+    public List<Categoria> listCategorias(){
+        return Arrays.asList(Categoria.values());
     }
 
     public List<Produto> findByCategoria(Categoria categoria) {
