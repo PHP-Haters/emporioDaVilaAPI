@@ -38,7 +38,7 @@ public class ProdutoController {
     }
 
     @GetMapping("/categorias")
-    public ResponseEntity<List<Categoria>> getCategorias(){
+    public ResponseEntity<List<Categoria>> getCategorias() {
         var result = produtoService.listCategorias();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

@@ -52,10 +52,18 @@ public class ProdutoService {
     }
 
     public List<Categoria> listCategorias(){
-        return Arrays.asList(Categoria.values());
+        List<Categoria> categorias =  Arrays.asList(Categoria.values());
+        if (categorias.isEmpty()) {
+            throw new GenericExceptions.General(
+                    "Não existem categorias cadastradas."
+            );
+        } else {
+            return categorias;
+        }
     }
 
     public List<Produto> findByCategoria(Categoria categoria) {
+
         List<Produto> produtos = produtoRepository.findAllByCategoria(categoria);
         if (produtos.isEmpty()) {
             throw new GenericExceptions.NotFound (
