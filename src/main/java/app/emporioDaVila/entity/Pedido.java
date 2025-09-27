@@ -19,6 +19,11 @@ public class Pedido {
     @JsonIgnoreProperties("pedido") // ignora o campo "pedido" dentro de ProdutoPedido
     private List<ProdutoPedido> produtoPedidos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("pedido") // ignora o campo "pedido" dentro de PagamentoPedido
+    private List<PagamentoPedido> pagamentoPedidos = new ArrayList<>();
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

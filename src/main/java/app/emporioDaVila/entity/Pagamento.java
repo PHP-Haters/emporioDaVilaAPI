@@ -1,15 +1,15 @@
 package app.emporioDaVila.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,6 +28,16 @@ public class Pagamento {
     @Min(value = 1, message = "Quantidade mínima é 1")
     private Integer quantidade;
 
-    @NotNull(message = "Estado é obrigatório")
     private Boolean finalizado;
+
+    @OneToMany(mappedBy = "pagamento", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("pagamento") // ignora o campo "pedido" dentro de PagamentoPedido
+    private List<PagamentoPedido> pagamentoPedidos = new ArrayList<>();
+
+    @PrePersist
+    public void prePersist() {
+        if (finalizado == null) {
+            finalizado = true;
+        }
+    }
 }
