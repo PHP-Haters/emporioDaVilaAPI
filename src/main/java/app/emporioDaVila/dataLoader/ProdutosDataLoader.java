@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class ProdutosDataLoader {
 
     @Bean
-    CommandLineRunner initDatabase(ProdutoService produtoService) {
+    CommandLineRunner initProdutosDatabase(ProdutoService produtoService) {
         return args -> {
             Produto p1 = new Produto();
             p1.setNome("Amendoim");
