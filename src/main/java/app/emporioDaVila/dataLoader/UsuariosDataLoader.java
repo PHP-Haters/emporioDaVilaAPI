@@ -12,10 +12,10 @@ public class UsuariosDataLoader {
     @Bean
     CommandLineRunner initUsuariosDatabase(UsuarioService usuarioService) {
         return args -> {
-            Usuario admin = new Usuario("Admin", "@admin2025", "45900000000", "admin@gmail.com");
+            Usuario admin = new Usuario("Admin", "@admin2025", "45900000000", "admin@gmail.com", true);
             usuarioService.saveUsuario(admin);
 
-            Usuario tester = new Usuario("Lucas", "@lucas2025", "45900000000", "lucas@gmail.com");
+            Usuario tester = new Usuario("Lucas", "@lucas2025", "45900000000", "lucas@gmail.com", false);
             usuarioService.saveUsuario(tester);
         };
     }

@@ -46,4 +46,10 @@ public class UsuarioController {
         usuarioService.delete(id);
         return ResponseEntity.noContent().build(); // status 204
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<Usuario> findById(@RequestBody Usuario usuario) {
+        var result = usuarioService.login(usuario);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

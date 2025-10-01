@@ -36,13 +36,24 @@ public class Usuario {
     @Email(message = "Email deve ser válido")
     private String email;
 
+    private Boolean admin;
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Endereco> enderecos = new ArrayList<>();
 
-    public Usuario(String nome, String senha, String telefone, String email){
+    public Usuario(String nome, String senha, String telefone, String email, Boolean admin) {
         this.nome = nome;
         this.senha = senha;
         this.telefone = telefone;
         this.email = email;
+        this.admin = admin;
+    }
+
+
+    @PrePersist
+    public void prePersist() {
+        if (admin == null) {
+            admin = false;
+        }
     }
 }

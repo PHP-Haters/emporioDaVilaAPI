@@ -76,4 +76,18 @@ public class UsuarioService {
         Usuario delete = findById(id);
         usuarioRepository.delete(delete);
     }
+    public Usuario login(Usuario usuario) {
+        Usuario foundUser = usuarioRepository.findByEmail(usuario.getEmail()).orElseThrow(() -> new GenericExceptions.NotFound("Usuário não encontrado."));
+
+        if (foundUser.getSenha().equals(usuario.getSenha())) {
+            foundUser.setSenha(null);
+            foundUser.setTelefone(null);
+            foundUser.setEmail(null);
+            foundUser.setNome(null);
+            return foundUser;
+        }
+        else {
+            throw new GenericExceptions.Unauthorized("Senha errada.");
+        }
+    }
 }
