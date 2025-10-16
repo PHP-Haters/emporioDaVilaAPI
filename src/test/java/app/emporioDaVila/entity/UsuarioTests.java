@@ -8,7 +8,9 @@ import static org.junit.jupiter.api.Assertions.*;
 // o contexto inteiro da aplicação não precisa ser subido
 public class UsuarioTests {
     @Test
-    void prePersist_ShouldSetAdminToFalse_WhenAdminIsNull() {
+    void prePersist_cenario01() {
+        // Usuário com atributo admin nulo deve ser setado como false
+
         // Arrange: criar usuário sem definir admin
         Usuario usuario = new Usuario();
         usuario.setNome("Gabriel");
@@ -26,7 +28,9 @@ public class UsuarioTests {
     }
 
     @Test
-    void prePersist_ShouldNotChangeAdmin_WhenAdminIsAlreadySet() {
+    void prePersist_cenario02() {
+        // Usuário com admin true deve ser persistido assim
+
         // Arrange: criar usuário com admin = true
         Usuario usuario = new Usuario();
         usuario.setNome("Admin");

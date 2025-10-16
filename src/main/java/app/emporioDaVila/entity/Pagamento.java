@@ -37,7 +37,7 @@ public class Pagamento {
     @PrePersist
     public void prePersist() {
         if (finalizado == null) {
-            finalizado = true;
+            finalizado = false;
         }
     }
 }
