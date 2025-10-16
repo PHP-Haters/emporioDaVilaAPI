@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/usuario")
 public class UsuarioController {
     @Autowired
-    private final UsuarioService usuarioService = new UsuarioService();
+    private UsuarioService usuarioService;
 
     @PostMapping
     public ResponseEntity<String> saveUsuario(@RequestBody @Valid Usuario usuario){
