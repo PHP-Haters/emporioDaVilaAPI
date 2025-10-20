@@ -1,5 +1,6 @@
 package app.emporioDaVila.entity;
 
+import app.emporioDaVila.entity.Enum.TipoPagamento;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +12,7 @@ class PagamentoTests {
 
         // Arrange: criar pagamento sem definir finalizado
         Pagamento pagamento = new Pagamento();
-        pagamento.setTipo("Cartão");
+        pagamento.setTipo(TipoPagamento.CARTAO_CREDITO);
         pagamento.setQuantidade(2);
         pagamento.setFinalizado(null);
 
@@ -29,7 +30,7 @@ class PagamentoTests {
 
         // Arrange: criar pagamento com finalizado = true
         Pagamento pagamento = new Pagamento();
-        pagamento.setTipo("Dinheiro");
+        pagamento.setTipo(TipoPagamento.DINHEIRO);
         pagamento.setQuantidade(1);
         pagamento.setFinalizado(true);
 
@@ -46,7 +47,7 @@ class PagamentoTests {
 
         // Arrange: criar pagamento com finalizado = false
         Pagamento pagamento = new Pagamento();
-        pagamento.setTipo("Dinheiro");
+        pagamento.setTipo(TipoPagamento.DINHEIRO);
         pagamento.setQuantidade(1);
         pagamento.setFinalizado(false);
 
