@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/usuario")
 public class UsuarioController {
     @Autowired
-    private final UsuarioService usuarioService = new UsuarioService();
+    private UsuarioService usuarioService;
 
     @PostMapping
     public ResponseEntity<String> saveUsuario(@RequestBody @Valid Usuario usuario){
@@ -31,8 +31,8 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> findById(@PathVariable Long id) {
-            var result = usuarioService.findById(id);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+        var result = usuarioService.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -48,7 +48,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Usuario> findById(@RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> login(@RequestBody Usuario usuario) {
         var result = usuarioService.login(usuario);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
