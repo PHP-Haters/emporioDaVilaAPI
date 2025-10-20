@@ -27,7 +27,6 @@ class UsuarioControllerTests {
     private UsuarioController usuarioController;
 
     private Usuario usuario;
-    private Usuario usuarioQuebrado;
 
     @BeforeEach
     void setup() {
@@ -37,13 +36,6 @@ class UsuarioControllerTests {
         usuario.setEmail("joao@example.com");
         usuario.setTelefone("45900000000");
         usuario.setSenha("123456");
-
-        usuarioQuebrado = new Usuario();
-        usuarioQuebrado.setId(2L);
-        usuarioQuebrado.setNome("Claudio");
-        usuarioQuebrado.setEmail(null);
-        usuarioQuebrado.setTelefone(null);
-        usuarioQuebrado.setSenha(null);
     }
 
     @Test
