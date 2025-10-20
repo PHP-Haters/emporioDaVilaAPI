@@ -37,11 +37,9 @@ class UsuarioControllerTests {
         usuario.setSenha("123456");
     }
 
-    // ---------------------------
-    // TESTE: saveUsuario
-    // ---------------------------
-    @Test
-    void deveSalvarUsuarioComSucesso() {
+
+    void save_cenario01() {
+        // Deve salvar usuário com sucesso
         when(usuarioService.saveUsuario(usuario)).thenReturn("Usuário salvo com sucesso.");
 
         ResponseEntity<String> response = usuarioController.saveUsuario(usuario);
@@ -51,11 +49,9 @@ class UsuarioControllerTests {
         verify(usuarioService, times(1)).saveUsuario(usuario);
     }
 
-    // ---------------------------
-    // TESTE: findAll
-    // ---------------------------
     @Test
-    void deveRetornarListaDeUsuarios() {
+    void findAll_cenario01() {
+        // Deve retornar lista de usuários com sucesso
         List<Usuario> lista = Arrays.asList(usuario, new Usuario());
         when(usuarioService.findAll()).thenReturn(lista);
 
@@ -66,11 +62,9 @@ class UsuarioControllerTests {
         verify(usuarioService, times(1)).findAll();
     }
 
-    // ---------------------------
-    // TESTE: findById
-    // ---------------------------
     @Test
-    void deveRetornarUsuarioPorId() {
+    void findById_cenario01() {
+        // Deve retornar usuário único com sucesso
         when(usuarioService.findById(1L)).thenReturn(usuario);
 
         ResponseEntity<Usuario> response = usuarioController.findById(1L);
@@ -80,11 +74,8 @@ class UsuarioControllerTests {
         verify(usuarioService, times(1)).findById(1L);
     }
 
-    // ---------------------------
-    // TESTE: update
-    // ---------------------------
     @Test
-    void deveAtualizarUsuarioComSucesso() {
+    void update_cenario01() {
         // Não precisamos do doNothing() se o método é void
         // Mockito já garante que o mock não fará nada
 
@@ -97,11 +88,9 @@ class UsuarioControllerTests {
         verify(usuarioService, times(1)).update(eq(1L), any(Usuario.class));
     }
 
-    // ---------------------------
-    // TESTE: delete
-    // ---------------------------
     @Test
-    void deveDeletarUsuarioComSucesso() {
+    void delete_cenario01() {
+         // Deve deletar usuário com sucesso
         doNothing().when(usuarioService).delete(1L);
 
         ResponseEntity<?> response = usuarioController.delete(1L);
@@ -110,11 +99,9 @@ class UsuarioControllerTests {
         verify(usuarioService, times(1)).delete(1L);
     }
 
-    // ---------------------------
-    // TESTE: login
-    // ---------------------------
     @Test
-    void deveFazerLoginComSucesso() {
+    void login_cenario01() {
+        // Deve logar usuário com sucesso
         when(usuarioService.login(usuario)).thenReturn(usuario);
 
         ResponseEntity<Usuario> response = usuarioController.findById(usuario);
