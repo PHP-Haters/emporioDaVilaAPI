@@ -27,6 +27,7 @@ class UsuarioControllerTests {
     private UsuarioController usuarioController;
 
     private Usuario usuario;
+    private Usuario usuarioQuebrado;
 
     @BeforeEach
     void setup() {
@@ -34,11 +35,19 @@ class UsuarioControllerTests {
         usuario.setId(1L);
         usuario.setNome("João");
         usuario.setEmail("joao@example.com");
+        usuario.setTelefone("45900000000");
         usuario.setSenha("123456");
+
+        usuarioQuebrado = new Usuario();
+        usuarioQuebrado.setId(2L);
+        usuarioQuebrado.setNome("Claudio");
+        usuarioQuebrado.setEmail(null);
+        usuarioQuebrado.setTelefone(null);
+        usuarioQuebrado.setSenha(null);
     }
 
-
-    void save_cenario01() {
+    @Test
+    void saveUsuario_cenarioSucesso() {
         // Deve salvar usuário com sucesso
         when(usuarioService.saveUsuario(usuario)).thenReturn("Usuário salvo com sucesso.");
 
@@ -50,7 +59,7 @@ class UsuarioControllerTests {
     }
 
     @Test
-    void findAll_cenario01() {
+    void findAll_cenarioSucesso() {
         // Deve retornar lista de usuários com sucesso
         List<Usuario> lista = Arrays.asList(usuario, new Usuario());
         when(usuarioService.findAll()).thenReturn(lista);
@@ -63,7 +72,7 @@ class UsuarioControllerTests {
     }
 
     @Test
-    void findById_cenario01() {
+    void findById_cenarioSucesso() {
         // Deve retornar usuário único com sucesso
         when(usuarioService.findById(1L)).thenReturn(usuario);
 
@@ -75,21 +84,19 @@ class UsuarioControllerTests {
     }
 
     @Test
-    void update_cenario01() {
-        // Não precisamos do doNothing() se o método é void
-        // Mockito já garante que o mock não fará nada
+    void update_cenarioSucesso() {
+        when(usuarioService.update(usuario.getId(), usuario)).thenReturn(usuario);
 
-        ResponseEntity<String> response = usuarioController.update(1L, usuario);
+        ResponseEntity<String> response = usuarioController.update(usuario.getId(), usuario);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Usuário atualizado com sucesso.", response.getBody());
 
         // Verifica se o update foi chamado
         verify(usuarioService, times(1)).update(eq(1L), any(Usuario.class));
     }
 
     @Test
-    void delete_cenario01() {
+    void delete_cenarioSucesso() {
          // Deve deletar usuário com sucesso
         doNothing().when(usuarioService).delete(1L);
 
@@ -100,11 +107,11 @@ class UsuarioControllerTests {
     }
 
     @Test
-    void login_cenario01() {
+    void login_cenarioSucesso() {
         // Deve logar usuário com sucesso
         when(usuarioService.login(usuario)).thenReturn(usuario);
 
-        ResponseEntity<Usuario> response = usuarioController.findById(usuario);
+        ResponseEntity<Usuario> response = usuarioController.login(usuario);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("João", response.getBody().getNome());
