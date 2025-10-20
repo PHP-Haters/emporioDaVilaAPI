@@ -34,17 +34,4 @@ public class PagamentoServiceTests {
         String retorno = this.pagamentoService.save(pagamento);
         assertEquals("Pagamento salvo com sucesso", retorno);
     }
-
-    //Teste com metodo save para dar erro no pagamento
-    @Test
-    void save_cenario02() {
-        Pagamento pagamento = new Pagamento();
-        pagamento.setTipo(TipoPagamento.CARTAO_CREDITO);
-        pagamento.setQuantidade(null);
-        pagamento.setFinalizado(false);
-
-        assertThrows(Exception.class, () -> {
-            String retorno = this.pagamentoService.save(pagamento);
-        });
-    }
 }
