@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class PagamentoServiceTests {
@@ -79,6 +79,16 @@ public class PagamentoServiceTests {
         Pagamento resultado = pagamentoService.update(1, update);
 
         assertEquals("Método de pagamento atualizado", resultado.getTipo());
+    }
+
+    //Teste com metodo delete para deletar pagamento
+    @Test
+    void delete_cenario01() {
+        when(pagamentoRepository.findById(1)).thenReturn(Optional.of(pagamento));
+        doNothing().when(pagamentoRepository).delete(pagamento);
+
+        assertDoesNotThrow(() -> pagamentoService.delete(1));
+        verify(pagamentoRepository, times(1)).delete(pagamento);
     }
 
 }
