@@ -67,4 +67,18 @@ public class PagamentoServiceTests {
         assertEquals(pagamento.getTipo(), resultado.getTipo());
     }
 
+    //Teste com metodo update para atualizar pagamento
+    @Test
+    void update_cenario01() {
+        Pagamento update = new Pagamento();
+        update.setTipo(TipoPagamento.DINHEIRO);
+
+        when(pagamentoRepository.findById(1)).thenReturn(Optional.of(pagamento));
+        when(pagamentoRepository.save(pagamento)).thenReturn(pagamento);
+
+        Pagamento resultado = pagamentoService.update(1, update);
+
+        assertEquals("Método de pagamento atualizado", resultado.getTipo());
+    }
+
 }
