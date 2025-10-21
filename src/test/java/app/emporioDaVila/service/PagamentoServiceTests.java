@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -54,6 +55,16 @@ public class PagamentoServiceTests {
 
         assertEquals(1, resultado.size());
         assertEquals(pagamento.getTipo(), resultado.get(0).getTipo());
+    }
+
+    //Teste com metodo findById para procurar algum pagamento específico
+    @Test
+    void findById_cenario01() {
+        when(pagamentoRepository.findById(1)).thenReturn(Optional.of(pagamento));
+
+        Pagamento resultado = pagamentoService.findById(1);
+
+        assertEquals(pagamento.getTipo(), resultado.getTipo());
     }
 
 }
