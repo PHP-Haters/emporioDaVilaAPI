@@ -2,6 +2,7 @@ package app.emporioDaVila.service;
 
 import app.emporioDaVila.entity.Enum.TipoPagamento;
 import app.emporioDaVila.entity.Pagamento;
+import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.repository.PagamentoRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,8 +12,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PagamentoServiceTests {
@@ -22,6 +27,8 @@ public class PagamentoServiceTests {
 
     @InjectMocks
     PagamentoService pagamentoService;
+
+    private Pagamento pagamento;
 
     //Teste com metodo save para válidar pagamento
     @Test
@@ -34,4 +41,19 @@ public class PagamentoServiceTests {
         String retorno = this.pagamentoService.save(pagamento);
         assertEquals("Pagamento salvo com sucesso", retorno);
     }
+
+    //Teste com metodo findAll para procurar todos os pagamentos
+    @Test
+    void findAll_cenario02() {
+        List<Pagamento> lista = new ArrayList<>();
+        lista.add(pagamento);
+
+        when(pagamentoRepository.findAll()).thenReturn(lista);
+
+        List<Pagamento> resultado = pagamentoRepository.findAll();
+
+        assertEquals(1, resultado.size());
+        assertEquals(pagamento.getTipo(), resultado.get(0).getTipo());
+    }
+
 }
