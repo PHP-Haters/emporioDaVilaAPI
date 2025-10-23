@@ -16,7 +16,7 @@ import java.util.List;
 public class EnderecoController {
 
     @Autowired
-    private final EnderecoService enderecoService = new EnderecoService();
+    private EnderecoService enderecoService;
 
     // Criar um novo endereço
     @PostMapping
