@@ -33,10 +33,9 @@ public class PagamentoControllerTests {
     //Teste para salvar pagamento com sucesso
     @Test
     void save_cenario01() {
-        // Deve salvar usuário com sucesso
-        when(pagamentoService.savePagamento(pagamento)).thenReturn("Pagamento salvo com sucesso.");
+        when(pagamentoService.save(pagamento)).thenReturn("Pagamento salvo com sucesso.");
 
-        ResponseEntity<String> response = pagamentoController.savePagamento(pagamento);
+        ResponseEntity<String> response = pagamentoController.save(pagamento);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Usuário salvo com sucesso.", response.getBody());
@@ -67,7 +66,7 @@ public class PagamentoControllerTests {
         verify(pagamentoService, times(1)).findById(1);
     }
 
-    // Teste que verifica se o update foi chamado
+    //Teste que verifica se o update foi chamado
     @Test
     void update_cenario01() {
         when(pagamentoService.update(pagamento.getId(), pagamento)).thenReturn(pagamento);
@@ -79,7 +78,7 @@ public class PagamentoControllerTests {
         verify(pagamentoService, times(1)).update(eq(1), any(Pagamento.class));
     }
 
-    // Teste para deletar usuário
+    //Teste para deletar usuário
     @Test
     void delete_cenario01() {
         doNothing().when(pagamentoService).delete(1);
