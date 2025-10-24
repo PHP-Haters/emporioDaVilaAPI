@@ -2,6 +2,7 @@ package app.emporioDaVila.service;
 
 import app.emporioDaVila.entity.Enum.TipoPagamento;
 import app.emporioDaVila.entity.Pagamento;
+import app.emporioDaVila.entity.PagamentoPedido;
 import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.repository.PagamentoRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +40,10 @@ public class PagamentoServiceTests {
         pagamento.setTipo(TipoPagamento.CARTAO_CREDITO);
         pagamento.setQuantidade(2);
         pagamento.setFinalizado(true);
-        pagamento.setPagamentoPedidos();
+
+        List<PagamentoPedido> pagamentoPedidos = new ArrayList<>();
+
+        pagamento.setPagamentoPedidos(pagamentoPedidos);
 
         pagamentoQuebrado = new Pagamento();
         pagamentoQuebrado.setId(2);
@@ -89,16 +93,22 @@ public class PagamentoServiceTests {
     //Teste com metodo update para atualizar pagamento
     @Test
     void update_cenario01() {
-        Pagamento update = new Pagamento();
-        update.setTipo(TipoPagamento.DINHEIRO);
+        Pagamento novoPagamento = new Pagamento();
+        novoPagamento.setTipo(TipoPagamento.DINHEIRO);
+        novoPagamento.setQuantidade(5);
+        novoPagamento.setFinalizado(true);
 
         when(pagamentoRepository.findById(1)).thenReturn(Optional.of(pagamento));
-        when(pagamentoRepository.save(pagamento)).thenReturn(pagamento);
+        when(pagamentoRepository.save(any(Pagamento.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Pagamento resultado = pagamentoService.update(1, update);
+        Pagamento resultado = pagamentoService.update(1, novoPagamento);
 
-        assertEquals("Método de pagamento atualizado", resultado.getTipo());
+        assertEquals(TipoPagamento.DINHEIRO, resultado.getTipo());
+        assertEquals(5, resultado.getQuantidade());
+        assertTrue(resultado.getFinalizado());
+        verify(pagamentoRepository, times(1)).save(any(Pagamento.class));
     }
+
 
     //Teste com metodo delete para deletar pagamento
     @Test
