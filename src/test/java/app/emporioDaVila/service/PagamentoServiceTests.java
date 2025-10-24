@@ -4,13 +4,13 @@ import app.emporioDaVila.entity.Enum.TipoPagamento;
 import app.emporioDaVila.entity.Pagamento;
 import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.repository.PagamentoRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,25 @@ public class PagamentoServiceTests {
     @InjectMocks
     PagamentoService pagamentoService;
 
-    private Pagamento pagamento;
+    Pagamento pagamento;
+    Pagamento pagamentoQuebrado;
+
+    @BeforeEach
+    void setup() {
+        pagamento = new Pagamento();
+        pagamento.setId(1);
+        pagamento.setTipo(TipoPagamento.CARTAO_CREDITO);
+        pagamento.setQuantidade(2);
+        pagamento.setFinalizado(true);
+        pagamento.setPagamentoPedidos();
+
+        pagamentoQuebrado = new Pagamento();
+        pagamentoQuebrado.setId(2);
+        pagamentoQuebrado.setTipo(TipoPagamento.DINHEIRO);
+        pagamentoQuebrado.setQuantidade(null);
+        pagamentoQuebrado.setFinalizado(null);
+        pagamentoQuebrado.setPagamentoPedidos(null);
+    }
 
     //Teste com metodo save para válidar pagamento
     @Test
@@ -45,6 +63,7 @@ public class PagamentoServiceTests {
 
     //Teste com metodo findAll para procurar todos os pagamentos
     @Test
+    @DisplayName("")
     void findAll_cenario02() {
         List<Pagamento> lista = new ArrayList<>();
         lista.add(pagamento);

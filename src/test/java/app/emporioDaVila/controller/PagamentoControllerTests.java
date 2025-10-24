@@ -2,14 +2,13 @@ package app.emporioDaVila.controller;
 
 import app.emporioDaVila.entity.Enum.TipoPagamento;
 import app.emporioDaVila.entity.Pagamento;
-import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.service.PagamentoService;
-import app.emporioDaVila.service.UsuarioService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -19,7 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class PagamentoControllerTests {
 
     @Mock
@@ -28,7 +27,7 @@ public class PagamentoControllerTests {
     @InjectMocks
     private PagamentoController pagamentoController;
 
-    private Pagamento pagamento;
+    Pagamento pagamento;
 
     //Teste para salvar pagamento com sucesso
     @Test
@@ -50,6 +49,7 @@ public class PagamentoControllerTests {
         ResponseEntity<List<Pagamento>> response = pagamentoController.findAll();
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertNotNull(response.getBody());
         assertEquals(2, response.getBody().size());
         verify(pagamentoService, times(1)).findAll();
     }
@@ -62,6 +62,7 @@ public class PagamentoControllerTests {
         ResponseEntity<Pagamento> response = pagamentoController.findById(1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertNotNull(response.getBody());
         assertEquals(TipoPagamento.CARTAO_CREDITO, response.getBody().getTipo());
         verify(pagamentoService, times(1)).findById(1);
     }
