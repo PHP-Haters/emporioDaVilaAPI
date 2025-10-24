@@ -5,6 +5,7 @@ import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.service.EnderecoService;
 import app.emporioDaVila.service.UsuarioService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -52,9 +53,9 @@ class EnderecoControllerTests {
         endereco.setUsuario(usuario);
     }
 
+    @DisplayName("Deve salvar o endereço com sucesso")
     @Test
-    void saveUsuario_cenarioSucesso() {
-        // Deve salvar usuário com sucesso
+    void saveEndereco_cenarioSucesso() {
         when(enderecoService.saveEndereco(endereco)).thenReturn("Endereço salvo com sucesso");
 
         ResponseEntity<String> response = enderecoController.saveEndereco(endereco);
@@ -63,9 +64,10 @@ class EnderecoControllerTests {
         assertEquals("Endereço salvo com sucesso", response.getBody());
         verify(enderecoService, times(1)).saveEndereco(endereco);
     }
+
+    @DisplayName("Deve retornar lista de endereços com sucesso")
     @Test
     void findAll_cenarioSucesso() {
-        // Deve retornar lista de endereços com sucesso
         List<Endereco> lista = Arrays.asList(endereco, new Endereco());
         when(enderecoService.findAll()).thenReturn(lista);
 
@@ -76,9 +78,9 @@ class EnderecoControllerTests {
         verify(enderecoService, times(1)).findAll();
     }
 
+    @DisplayName("Deve retornar um único endereço com sucesso")
     @Test
     void findById_cenarioSucesso() {
-        // Deve retornar usuário único com sucesso
         when(enderecoService.findById(1L)).thenReturn(endereco);
 
         ResponseEntity<Endereco> response = enderecoController.findById(1L);
@@ -88,6 +90,7 @@ class EnderecoControllerTests {
         verify(enderecoService, times(1)).findById(1L);
     }
 
+    @DisplayName("Deve atualizar o endereço ocm sucesso")
     @Test
     void update_cenarioSucesso() {
         when(enderecoService.update(endereco.getId(), endereco)).thenReturn(endereco);
@@ -99,9 +102,9 @@ class EnderecoControllerTests {
         // Verifica se o update foi chamado
         verify(enderecoService, times(1)).update(eq(1L), any(Endereco.class));
     }
+    @DisplayName("Deve deletear o endereço com sucesso")
     @Test
     void delete_cenarioSucesso() {
-        // Deve deletar usuário com sucesso
         doNothing().when(enderecoService).delete(1L);
 
         ResponseEntity<?> response = enderecoController.delete(1L);
@@ -109,4 +112,16 @@ class EnderecoControllerTests {
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(enderecoService, times(1)).delete(1L);
     }
+    @DisplayName("Deve retornar um único endereço com sucesso")
+    @Test
+    void findByUsuarioId_cenarioSucesso() {
+        when(enderecoService.findByUsuarioId(1L)).thenReturn(List.of(endereco));
+
+        ResponseEntity<List<Endereco>> response = enderecoController.findByUsuarioId(1L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Bairro", response.getBody().get(0).getBairro());
+        verify(enderecoService, times(1)).findByUsuarioId(1L);
+    }
+
 }
