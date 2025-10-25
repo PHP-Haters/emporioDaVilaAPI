@@ -1,9 +1,11 @@
 package app.emporioDaVila.service;
 
+import app.emporioDaVila.entity.Enum.Categoria;
 import app.emporioDaVila.entity.Pedido;
 import app.emporioDaVila.entity.Produto;
 import app.emporioDaVila.entity.ProdutoPedido;
 import app.emporioDaVila.repository.ProdutoPedidoRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,6 +30,36 @@ public class ProdutoPedidoServiceTests {
     ProdutoPedidoService produtoPedidoService;
 
     ProdutoPedido produtoPedido;
+    ProdutoPedido produtoPedidoQuebrado;
+
+    @BeforeEach
+    void setup() {
+            Produto produto = new Produto();
+            produto.setId(1);
+            produto.setNome("Chá Verde");
+            produto.setValor(12.5f);
+            produto.setStock(true);
+            produto.setImagem("imagem-cha-verde.jpg");
+            produto.setCategoria(Categoria.SUPLEMENTOS);
+            produto.setProdutosPedidos(new ArrayList<>());
+
+            Pedido pedido = new Pedido();
+            pedido.setId(1L);
+            pedido.setIdUsuario(100L);
+            pedido.setEstado(true);
+            pedido.setProdutoPedidos(new ArrayList<>());
+            pedido.setPagamentoPedidos(new ArrayList<>());
+
+            produtoPedido = new ProdutoPedido();
+            produtoPedido.setId(1);
+            produtoPedido.setPedido(pedido);
+            produtoPedido.setProduto(produto);
+
+            produtoPedidoQuebrado = new ProdutoPedido();
+            produtoPedidoQuebrado.setId(2);
+            produtoPedidoQuebrado.setPedido(null);
+            produtoPedidoQuebrado.setProduto(null);
+    }
 
     //Teste com metodo save para válidar pagamento
     @Test
@@ -50,7 +82,7 @@ public class ProdutoPedidoServiceTests {
 
     //Teste com metodo findAll para procurar todos os pagamentos
     @Test
-    void findAll_cenario02() {
+    void findAll_cenario01() {
         List<ProdutoPedido> lista = new ArrayList<>();
         lista.add(produtoPedido);
 
