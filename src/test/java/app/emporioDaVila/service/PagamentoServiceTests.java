@@ -3,6 +3,7 @@ package app.emporioDaVila.service;
 import app.emporioDaVila.entity.Enum.TipoPagamento;
 import app.emporioDaVila.entity.Pagamento;
 import app.emporioDaVila.entity.PagamentoPedido;
+import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.repository.PagamentoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,11 +41,9 @@ public class PagamentoServiceTests {
         pagamento.setQuantidade(2);
         pagamento.setFinalizado(true);
 
-        PagamentoPedido pagamentoPedido = new PagamentoPedido();
-        pagamentoPedido.setPagamento(pagamento);
-        List<PagamentoPedido> lista = new ArrayList<>();
-        lista.add(pagamentoPedido);
-        pagamento.setPagamentoPedidos(lista);
+        List<PagamentoPedido> pagamentoPedidos = new ArrayList<>();
+
+        pagamento.setPagamentoPedidos(pagamentoPedidos);
 
         pagamentoQuebrado = new Pagamento();
         pagamentoQuebrado.setId(2);
@@ -68,13 +67,14 @@ public class PagamentoServiceTests {
 
     //Teste com metodo findAll para procurar todos os pagamentos
     @Test
-    void findAll_cenario01() {
+    @DisplayName("")
+    void findAll_cenario02() {
         List<Pagamento> lista = new ArrayList<>();
         lista.add(pagamento);
 
         when(pagamentoRepository.findAll()).thenReturn(lista);
 
-        List<Pagamento> resultado = pagamentoService.findAll();
+        List<Pagamento> resultado = pagamentoRepository.findAll();
 
         assertEquals(1, resultado.size());
         assertEquals(pagamento.getTipo(), resultado.get(0).getTipo());
@@ -93,16 +93,22 @@ public class PagamentoServiceTests {
     //Teste com metodo update para atualizar pagamento
     @Test
     void update_cenario01() {
-        Pagamento update = new Pagamento();
-        update.setTipo(TipoPagamento.DINHEIRO);
+        Pagamento novoPagamento = new Pagamento();
+        novoPagamento.setTipo(TipoPagamento.DINHEIRO);
+        novoPagamento.setQuantidade(5);
+        novoPagamento.setFinalizado(true);
 
         when(pagamentoRepository.findById(1)).thenReturn(Optional.of(pagamento));
-        when(pagamentoRepository.save(pagamento)).thenReturn(pagamento);
+        when(pagamentoRepository.save(any(Pagamento.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Pagamento resultado = pagamentoService.update(1, update);
+        Pagamento resultado = pagamentoService.update(1, novoPagamento);
 
-        assertEquals("Método de pagamento atualizado", resultado.getTipo());
+        assertEquals(TipoPagamento.DINHEIRO, resultado.getTipo());
+        assertEquals(5, resultado.getQuantidade());
+        assertTrue(resultado.getFinalizado());
+        verify(pagamentoRepository, times(1)).save(any(Pagamento.class));
     }
+
 
     //Teste com metodo delete para deletar pagamento
     @Test

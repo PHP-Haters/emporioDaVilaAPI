@@ -1,9 +1,12 @@
 package app.emporioDaVila.controller;
 
 import app.emporioDaVila.entity.Enum.TipoPagamento;
+import app.emporioDaVila.entity.Pedido;
+import app.emporioDaVila.entity.Produto;
 import app.emporioDaVila.entity.ProdutoPedido;
 import app.emporioDaVila.service.ProdutoPedidoService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,6 +34,20 @@ public class ProdutoPedidoControllerTests {
     private ProdutoPedidoController produtoPedidoController;
 
     ProdutoPedido produtoPedido;
+
+    @BeforeEach
+    void setup() {
+        Pedido pedido = new Pedido();
+        pedido.setId(1L); // supondo que Pedido tem um campo id
+
+        Produto produto = new Produto();
+        produto.setId(10); // supondo que Produto também tem um campo id
+
+        produtoPedido = new ProdutoPedido();
+        produtoPedido.setId(100);
+        produtoPedido.setPedido(pedido);
+        produtoPedido.setProduto(produto);
+    }
 
     //Teste para salvar pagamento com sucesso
     @Test
@@ -65,7 +82,9 @@ public class ProdutoPedidoControllerTests {
         ResponseEntity<ProdutoPedido> response = produtoPedidoController.findById(1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(TipoPagamento.CARTAO_CREDITO, response.getBody().getTipo());
+        // Checa de fato o valor dos ID de pedido e produto em produtoPedido
+        assertEquals(1, response.getBody().getPedido().getId());
+        assertEquals(10, response.getBody().getProduto().getId());
         verify(produtoPedidoService, times(1)).findById(1);
     }
 
