@@ -16,7 +16,7 @@ import java.util.List;
 public class PagamentoController {
 
     @Autowired
-    private final PagamentoService pagamentoService = new  PagamentoService();
+    private PagamentoService pagamentoService;
 
     @PostMapping
     public ResponseEntity<String> save(@RequestBody @Valid Pagamento pagamento) {
