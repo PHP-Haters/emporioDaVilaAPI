@@ -1,6 +1,5 @@
 package app.emporioDaVila.controller;
 
-import app.emporioDaVila.entity.Enum.TipoPagamento;
 import app.emporioDaVila.entity.Pedido;
 import app.emporioDaVila.entity.Produto;
 import app.emporioDaVila.entity.ProdutoPedido;
@@ -25,7 +24,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
-public class ProdutoPedidoControllerTests {
+class ProdutoPedidoControllerTests {
 
     @Mock
     private ProdutoPedidoService produtoPedidoService;
@@ -52,12 +51,13 @@ public class ProdutoPedidoControllerTests {
     //Teste para salvar pagamento com sucesso
     @Test
     void save_cenario01() {
-        when(produtoPedidoService.save(produtoPedido)).thenReturn("Pedido do produto salvo com sucesso.");
+        when(produtoPedidoService.save(produtoPedido)).thenReturn("Pedido do produto salvo com sucesso");
 
         ResponseEntity<String> response = produtoPedidoController.save(produtoPedido);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Pedido do produto salvo com sucesso.", response.getBody());
+        assertEquals("Pedido do produto salvo com sucesso", response.getBody());
+        verify(produtoPedidoService, times(1)).save(produtoPedido);
     }
 
     //Teste para retornar lista de pagamentos

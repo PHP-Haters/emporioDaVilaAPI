@@ -16,7 +16,7 @@ import java.util.List;
 public class ProdutoPedidoController {
 
     @Autowired
-    private final ProdutoPedidoService produtoPedidoService = new ProdutoPedidoService();
+    private ProdutoPedidoService produtoPedidoService;
 
     @PostMapping
     public ResponseEntity<String> save(@RequestBody @Valid ProdutoPedido produtoPedido) {
