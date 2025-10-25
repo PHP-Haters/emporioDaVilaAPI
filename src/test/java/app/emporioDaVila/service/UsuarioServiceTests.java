@@ -4,6 +4,7 @@ import app.emporioDaVila.ExceptionHandlers.GenericExceptions;
 import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.repository.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -132,6 +133,7 @@ public class UsuarioServiceTests {
     }
 
     @Test
+    @DisplayName("")
     void update_cenario02() {
         // Erro: usuário não encontrado → lança NotFound
         when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());

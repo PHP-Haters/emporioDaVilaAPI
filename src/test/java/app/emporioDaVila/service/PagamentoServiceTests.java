@@ -2,7 +2,7 @@ package app.emporioDaVila.service;
 
 import app.emporioDaVila.entity.Enum.TipoPagamento;
 import app.emporioDaVila.entity.Pagamento;
-import app.emporioDaVila.entity.Usuario;
+import app.emporioDaVila.entity.PagamentoPedido;
 import app.emporioDaVila.repository.PagamentoRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,7 +39,12 @@ public class PagamentoServiceTests {
         pagamento.setTipo(TipoPagamento.CARTAO_CREDITO);
         pagamento.setQuantidade(2);
         pagamento.setFinalizado(true);
-        pagamento.setPagamentoPedidos();
+
+        PagamentoPedido pagamentoPedido = new PagamentoPedido();
+        pagamentoPedido.setPagamento(pagamento);
+        List<PagamentoPedido> lista = new ArrayList<>();
+        lista.add(pagamentoPedido);
+        pagamento.setPagamentoPedidos(lista);
 
         pagamentoQuebrado = new Pagamento();
         pagamentoQuebrado.setId(2);
@@ -63,14 +68,13 @@ public class PagamentoServiceTests {
 
     //Teste com metodo findAll para procurar todos os pagamentos
     @Test
-    @DisplayName("")
-    void findAll_cenario02() {
+    void findAll_cenario01() {
         List<Pagamento> lista = new ArrayList<>();
         lista.add(pagamento);
 
         when(pagamentoRepository.findAll()).thenReturn(lista);
 
-        List<Pagamento> resultado = pagamentoRepository.findAll();
+        List<Pagamento> resultado = pagamentoService.findAll();
 
         assertEquals(1, resultado.size());
         assertEquals(pagamento.getTipo(), resultado.get(0).getTipo());
