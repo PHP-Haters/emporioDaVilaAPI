@@ -53,8 +53,8 @@ public class PagamentoServiceTests {
         pagamentoQuebrado.setPagamentoPedidos(null);
     }
 
-    //Teste com metodo save para válidar pagamento
     @Test
+    @DisplayName("Salva pagamento com sucesso")
     void save_cenario01() {
         Pagamento pagamento = new Pagamento();
         pagamento.setTipo(TipoPagamento.CARTAO_CREDITO);
@@ -65,9 +65,8 @@ public class PagamentoServiceTests {
         assertEquals("Pagamento salvo com sucesso", retorno);
     }
 
-    //Teste com metodo findAll para procurar todos os pagamentos
     @Test
-    @DisplayName("")
+    @DisplayName("Retorna lista de pagamentos com sucesso")
     void findAll_cenario02() {
         List<Pagamento> lista = new ArrayList<>();
         lista.add(pagamento);
@@ -80,8 +79,8 @@ public class PagamentoServiceTests {
         assertEquals(pagamento.getTipo(), resultado.get(0).getTipo());
     }
 
-    //Teste com metodo findById para procurar algum pagamento específico
     @Test
+    @DisplayName("Retorna pagamento com id específico com sucesso")
     void findById_cenario01() {
         when(pagamentoRepository.findById(1)).thenReturn(Optional.of(pagamento));
 
@@ -90,8 +89,8 @@ public class PagamentoServiceTests {
         assertEquals(pagamento.getTipo(), resultado.getTipo());
     }
 
-    //Teste com metodo update para atualizar pagamento
     @Test
+    @DisplayName("Atualiza pagamento com sucesso")
     void update_cenario01() {
         Pagamento novoPagamento = new Pagamento();
         novoPagamento.setTipo(TipoPagamento.DINHEIRO);
@@ -110,8 +109,8 @@ public class PagamentoServiceTests {
     }
 
 
-    //Teste com metodo delete para deletar pagamento
     @Test
+    @DisplayName("Deleta pagamento com sucesso")
     void delete_cenario01() {
         when(pagamentoRepository.findById(1)).thenReturn(Optional.of(pagamento));
         doNothing().when(pagamentoRepository).delete(pagamento);

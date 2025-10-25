@@ -6,6 +6,7 @@ import app.emporioDaVila.entity.Produto;
 import app.emporioDaVila.entity.ProdutoPedido;
 import app.emporioDaVila.repository.ProdutoPedidoRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -61,8 +62,8 @@ public class ProdutoPedidoServiceTests {
             produtoPedidoQuebrado.setProduto(null);
     }
 
-    //Teste com metodo save para válidar pagamento
     @Test
+    @DisplayName("Salva pedido do produto com sucesso")
     void save_cenario01() {
         Produto produto = new Produto();
         produto.setId(1);
@@ -80,8 +81,8 @@ public class ProdutoPedidoServiceTests {
         assertEquals("Pedido do produto salvo com sucesso", retorno);
     }
 
-    //Teste com metodo findAll para procurar todos os pagamentos
     @Test
+    @DisplayName("Retorna lista de pedidos do produto com sucesso")
     void findAll_cenario01() {
         List<ProdutoPedido> lista = new ArrayList<>();
         lista.add(produtoPedido);
@@ -94,8 +95,8 @@ public class ProdutoPedidoServiceTests {
         assertEquals(produtoPedido.getId(), resultado.get(0).getId());
     }
 
-    //Teste com metodo findById para procurar algum pagamento específico
     @Test
+    @DisplayName("Retorna pedido do produto com id específico com sucesso")
     void findById_cenario01() {
         when(produtoPedidoRepository.findById(1)).thenReturn(Optional.of(produtoPedido));
 
@@ -104,8 +105,8 @@ public class ProdutoPedidoServiceTests {
         assertEquals(produtoPedido.getId(), resultado.getId());
     }
 
-    //Teste com metodo update para atualizar pagamento
     @Test
+    @DisplayName("Atualiza pedido do produto com sucesso")
     void update_cenario01() {
         ProdutoPedido existente = new ProdutoPedido();
         existente.setId(1);
@@ -124,8 +125,8 @@ public class ProdutoPedidoServiceTests {
         verify(produtoPedidoRepository, times(1)).save(existente);
     }
 
-    //Teste com metodo delete para deletar pagamento
     @Test
+    @DisplayName("Deleta pedido do produto com sucesso")
     void delete_cenario01() {
         when(produtoPedidoRepository.findById(1)).thenReturn(Optional.of(produtoPedido));
         doNothing().when(produtoPedidoRepository).delete(produtoPedido);

@@ -4,6 +4,7 @@ import app.emporioDaVila.entity.*;
 import app.emporioDaVila.entity.Enum.TipoPagamento;
 import app.emporioDaVila.service.PagamentoService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,8 +45,8 @@ public class PagamentoControllerTests {
         pagamento.setPagamentoPedidos(pagamentoPedidos);
     }
 
-    //Teste para salvar pagamento com sucesso
     @Test
+    @DisplayName("Salva pagamento com sucesso")
     void save_cenario01() {
         when(pagamentoService.save(pagamento)).thenReturn("Pagamento salvo com sucesso");
 
@@ -56,8 +57,8 @@ public class PagamentoControllerTests {
         verify(pagamentoService, times(1)).save(pagamento);
     }
 
-    //Teste para retornar lista de pagamentos
     @Test
+    @DisplayName("Retorna lista de pagamentos com sucesso")
     void findAll_cenario01() {
         List<Pagamento> lista = Arrays.asList(pagamento, new Pagamento());
         when(pagamentoService.findAll()).thenReturn(lista);
@@ -70,8 +71,8 @@ public class PagamentoControllerTests {
         verify(pagamentoService, times(1)).findAll();
     }
 
-    //Teste para retornar usuário único
     @Test
+    @DisplayName("Retorna pagamento com id específico com sucesso")
     void findById_cenario01() {
         when(pagamentoService.findById(1)).thenReturn(pagamento);
 
@@ -82,8 +83,8 @@ public class PagamentoControllerTests {
         verify(pagamentoService, times(1)).findById(1);
     }
 
-    //Teste que verifica se o update foi chamado
     @Test
+    @DisplayName("Atualiza pagamento com sucesso")
     void update_cenario01() {
         when(pagamentoService.update(pagamento.getId(), pagamento)).thenReturn(pagamento);
 
@@ -94,8 +95,8 @@ public class PagamentoControllerTests {
         verify(pagamentoService, times(1)).update(eq(1), any(Pagamento.class));
     }
 
-    //Teste para deletar usuário
     @Test
+    @DisplayName("Deleta pagamento com sucesso")
     void delete_cenario01() {
         doNothing().when(pagamentoService).delete(1);
 

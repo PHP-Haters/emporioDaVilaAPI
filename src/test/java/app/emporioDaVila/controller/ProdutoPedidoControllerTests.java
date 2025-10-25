@@ -6,6 +6,7 @@ import app.emporioDaVila.entity.ProdutoPedido;
 import app.emporioDaVila.service.ProdutoPedidoService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -48,8 +49,8 @@ class ProdutoPedidoControllerTests {
         produtoPedido.setProduto(produto);
     }
 
-    //Teste para salvar pagamento com sucesso
     @Test
+    @DisplayName("Salva pedido do produto com sucesso")
     void save_cenario01() {
         when(produtoPedidoService.save(produtoPedido)).thenReturn("Pedido do produto salvo com sucesso");
 
@@ -60,8 +61,8 @@ class ProdutoPedidoControllerTests {
         verify(produtoPedidoService, times(1)).save(produtoPedido);
     }
 
-    //Teste para retornar lista de pagamentos
     @Test
+    @DisplayName("Retorna lista de pedidos do produto com sucesso")
     void findAll_cenario01() {
         List<ProdutoPedido> lista = Arrays.asList(produtoPedido, new ProdutoPedido());
         when(produtoPedidoService.findAll()).thenReturn(lista);
@@ -74,8 +75,8 @@ class ProdutoPedidoControllerTests {
         verify(produtoPedidoService, times(1)).findAll();
     }
 
-    //Teste para retornar usuário único
     @Test
+    @DisplayName("Retorna pedido do produto com id específico com sucesso")
     void findById_cenario01() {
         when(produtoPedidoService.findById(1)).thenReturn(produtoPedido);
 
@@ -88,8 +89,8 @@ class ProdutoPedidoControllerTests {
         verify(produtoPedidoService, times(1)).findById(1);
     }
 
-    //Teste que verifica se o update foi chamado
     @Test
+    @DisplayName("Atualiza pedido do produto com sucesso")
     void update_cenario01() {
         when(produtoPedidoService.update(produtoPedido.getId(), produtoPedido)).thenReturn(produtoPedido);
 
@@ -100,8 +101,8 @@ class ProdutoPedidoControllerTests {
         verify(produtoPedidoService, times(1)).update(eq(1), any(ProdutoPedido.class));
     }
 
-    //Teste para deletar usuário
     @Test
+    @DisplayName("Deleta pedido do produto com sucesso")
     void delete_cenario01() {
         doNothing().when(produtoPedidoService).delete(1);
 
