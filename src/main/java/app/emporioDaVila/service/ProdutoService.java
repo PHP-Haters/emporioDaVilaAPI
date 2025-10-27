@@ -16,9 +16,9 @@ import java.util.List;
 public class ProdutoService {
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private static ProdutoRepository produtoRepository;
 
-    public String save(Produto produto) {
+    public static String save(Produto produto) {
         try {
             produtoRepository.save(produto);
             return "Produto salvo com sucesso";
@@ -35,7 +35,7 @@ public class ProdutoService {
         }
     }
 
-    public List<Produto> findAll() {
+    public static List<Produto> findAll() {
         List<Produto> produtos = produtoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         if (produtos.isEmpty()) {
             throw new GenericExceptions.General(
@@ -46,7 +46,7 @@ public class ProdutoService {
         }
     }
 
-    public Produto findById(Integer id) {
+    public static Produto findById(Integer id) {
         return produtoRepository.findById(id)
                 .orElseThrow(() -> new GenericExceptions.NotFound("Produto não encontrado."));
     }
@@ -74,7 +74,7 @@ public class ProdutoService {
         }
     }
 
-    public Produto update(Integer id, Produto novoProduto) {
+    public static Produto update(Integer id, Produto novoProduto) {
         Produto update = findById(id);
 
         if (novoProduto.getCategoria() != null) {
@@ -100,7 +100,7 @@ public class ProdutoService {
         return produtoRepository.save(update);
     }
 
-    public void delete(Integer id) {
+    public static void delete(Integer id) {
         Produto delete = findById(id);
         produtoRepository.delete(delete);
     }
