@@ -17,12 +17,12 @@ import java.util.List;
 public class ProdutoController {
 
     @Autowired
-    private final ProdutoService produtoService = new  ProdutoService();
+    private ProdutoService produtoService;
 
     @PostMapping
     public ResponseEntity<String> save(@RequestBody @Valid Produto produto) {
-            String result = this.produtoService.save(produto);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+        String result = this.produtoService.save(produto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping
@@ -33,8 +33,8 @@ public class ProdutoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Produto> findById(@PathVariable Integer id) {
-            var result = produtoService.findById(id);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+        var result = produtoService.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/categorias")
@@ -43,7 +43,7 @@ public class ProdutoController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/categoria/{categoria}")   
+    @GetMapping("/categoria/{categoria}")
     public ResponseEntity<List<Produto>> findByCategoria(@PathVariable Categoria categoria) {
         var result = produtoService.findByCategoria(categoria);
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -52,8 +52,8 @@ public class ProdutoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid Produto produtoUpdate) {
-            produtoService.update(id, produtoUpdate);
-            return new ResponseEntity<>("Produto atualizado com sucesso.", HttpStatus.OK);
+        produtoService.update(id, produtoUpdate);
+        return new ResponseEntity<>("Produto atualizado com sucesso.", HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -61,4 +61,5 @@ public class ProdutoController {
         produtoService.delete(id);
         return ResponseEntity.noContent().build(); // status 204
     }
+
 }

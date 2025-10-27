@@ -14,7 +14,7 @@ import java.util.List;
 public class PedidoController {
 
     @Autowired
-    private final PedidoService pedidoService =  new PedidoService();
+    private  PedidoService pedidoService;
 
     @PostMapping
     public ResponseEntity<String> save(@RequestBody @Valid Pedido pedido) {
