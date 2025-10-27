@@ -9,7 +9,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import app.emporioDaVila.service.ProdutoService;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +45,9 @@ public class ProdutoServiceTests {
         // Salva Produto com sucesso
         when(produtoRepository.save(produto)).thenReturn(produto);
 
-        String retorno = ProdutoService.save(produto);
+        String retorno = produtoService.save(produto);
 
-        assertEquals("Produto salvo com sucesso.", retorno);
+        assertEquals("Produto salvo com sucesso", retorno);
     }
 
     // finAll
@@ -55,20 +57,21 @@ public class ProdutoServiceTests {
         List<Produto> lista = new ArrayList<>();
         lista.add(produto);
 
-        when(produtoRepository.findAll()).thenReturn(lista);
+        when(produtoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"))).thenReturn(lista);
 
-        List<Produto> resultado = ProdutoService.findAll();
+        List<Produto> resultado = produtoService.findAll();
 
         assertEquals(1, resultado.size());
         assertEquals(produto.getNome(), resultado.get(0).getNome());
     }
+
     // findById
     @Test
     void findById_cenario() {
         // Sucesso: retorna o usuário encontrado
         when(produtoRepository.findById(1)).thenReturn(Optional.of(produto));
 
-        Produto resultado = ProdutoService.findById(1);
+        Produto resultado = produtoService.findById(1);
 
         assertEquals(produto.getNome(), resultado.getNome());
     }
@@ -83,9 +86,9 @@ public class ProdutoServiceTests {
         when(produtoRepository.findById(1)).thenReturn(Optional.of(produto));
         when(produtoRepository.save(produto)).thenReturn(produto);
 
-        Produto resultado = ProdutoService.update(1, updateData);
+        Produto resultado = produtoService.update(1, updateData);
 
-        assertEquals("João Atualizado", resultado.getNome());
+        assertEquals(updateData.getNome(), resultado.getNome());
     }
 
     // delete
@@ -95,7 +98,7 @@ public class ProdutoServiceTests {
         when(produtoRepository.findById(1)).thenReturn(Optional.of(produto));
         doNothing().when(produtoRepository).delete(produto);
 
-        assertDoesNotThrow(() -> ProdutoService.delete(1));
+        assertDoesNotThrow(() -> produtoService.delete(1));
         verify(produtoRepository, times(1)).delete(produto);
     }
 
