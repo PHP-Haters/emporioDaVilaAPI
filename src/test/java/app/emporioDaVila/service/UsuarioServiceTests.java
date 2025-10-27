@@ -133,9 +133,8 @@ public class UsuarioServiceTests {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("suário não encontrado → lança NotFound")
     void update_cenario02() {
-        // Erro: usuário não encontrado → lança NotFound
         when(usuarioRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(GenericExceptions.NotFound.class, () -> usuarioService.update(1L, usuario));

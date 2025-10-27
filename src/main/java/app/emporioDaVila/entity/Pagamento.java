@@ -1,5 +1,6 @@
 package app.emporioDaVila.entity;
 
+import app.emporioDaVila.entity.Enum.TipoPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -22,7 +23,8 @@ public class Pagamento {
     private Integer id;
 
     @NotBlank(message = "Tipo de pagamento é obrigatório")
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    private TipoPagamento tipo;
 
     @NotNull(message = "Quantidade é obrigatória")
     @Min(value = 1, message = "Quantidade mínima é 1")
