@@ -44,7 +44,7 @@ class ProdutoPedidoControllerTests {
         produto.setId(10); // supondo que Produto também tem um campo id
 
         produtoPedido = new ProdutoPedido();
-        produtoPedido.setId(100);
+        produtoPedido.setId(1);
         produtoPedido.setPedido(pedido);
         produtoPedido.setProduto(produto);
     }
