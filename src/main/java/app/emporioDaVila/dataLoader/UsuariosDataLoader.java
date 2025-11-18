@@ -15,7 +15,7 @@ public class UsuariosDataLoader {
             Usuario admin = new Usuario("Admin", "$2a$10$xl4VocjQnVrw3.qWSuIgpurg4BoW0Voo2vZacUpPH1WwjY8SAEVcG", "45900000000", "admin@gmail.com", true);
             usuarioService.saveUsuario(admin);
 
-            Usuario tester = new Usuario("Lucas", "@lucas2025", "45900000000", "lucas@gmail.com", false);
+            Usuario tester = new Usuario("John Doe", "$2a$10$u.EXiV5UftSNwDrT1krFUuyFN/L99EK7okSrVJU4vRpla6veyPMKy", "45900000000", "johnDoe@gmail.com", false);
             usuarioService.saveUsuario(tester);
         };
     }
