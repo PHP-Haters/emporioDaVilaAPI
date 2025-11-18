@@ -50,6 +50,11 @@ public class UsuarioService {
                 .orElseThrow(() -> new GenericExceptions.NotFound("Usuário não encontrado."));
     }
 
+    public Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new GenericExceptions.NotFound("Usuário não encontrado."));
+    }
+
     public Usuario update(Long id, Usuario novoUsuario) {
         Usuario update = findById(id);
 
