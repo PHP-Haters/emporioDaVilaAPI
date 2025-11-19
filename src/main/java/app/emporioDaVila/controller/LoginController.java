@@ -2,7 +2,10 @@ package app.emporioDaVila.controller;
 
 import app.emporioDaVila.dto.LoginResponseDTO;
 import app.emporioDaVila.entity.Login;
+import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.service.LoginService;
+import app.emporioDaVila.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/auth")
 @CrossOrigin("*")
 public class LoginController {
 
 	@Autowired
 	private LoginService loginService;
 
-	@PostMapping
+    @Autowired
+    private UsuarioService usuarioService;
+
+	@PostMapping("/login")
 	public ResponseEntity<?> logar(@RequestBody Login login) {
 		try {
 			LoginResponseDTO resposta = loginService.logar(login);
@@ -41,4 +47,9 @@ public class LoginController {
 		}
 	}
 
+    @PostMapping("/registrar")
+    public ResponseEntity<?> registrar(@RequestBody @Valid Usuario usuario){
+        String response = this.usuarioService.saveUsuario(usuario);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
