@@ -1,7 +1,5 @@
 package app.emporioDaVila.config;
 
-//JwtService.java
-
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,6 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import app.emporioDaVila.entity.Usuario;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,75 +18,71 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Service
-public class JwtServiceGenerator {  
+public class JwtServiceGenerator {
 
-	///////////////////////////////////////////////////////
-	//Parâmetros para geração do token
-	public static final String SECRET_KEY = "UMACHAVESECRETADASUAAPIAQUIUMACHAVESECRETADASUAAPIAQUIUMACHAVESECRETADASUAAPIAQUIUMACHAVESECRETADASUAAPIAQUI";
-	public static final SignatureAlgorithm ALGORITMO_ASSINATURA = SignatureAlgorithm.HS256;
-	public static final int HORAS_EXPIRACAO_TOKEN = 1;
+    private final JwtProperties jwtProperties; // injeta as propriedades
 
-	public Map<String, Object> gerarPayload(Usuario usuario){
-		//AQUI VOCÊ PODE COLOCAR O QUE MAIS VAI COMPOR O PAYLOAD DO TOKEN
-		
-		Map<String, Object> payloadData = new HashMap<>();
-		payloadData.put("username", usuario.getNome());
-		payloadData.put("id", usuario.getId().toString());
-		payloadData.put("isAdmin", usuario.getAdmin());
+    public static final SignatureAlgorithm ALGORITMO_ASSINATURA = SignatureAlgorithm.HS256;
 
-		return payloadData;
-	}
+    @Autowired
+    public JwtServiceGenerator(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
 
-	///////////////////////////////////////////////////////
+    public Map<String, Object> gerarPayload(Usuario usuario){
+        Map<String, Object> payloadData = new HashMap<>();
+        payloadData.put("userEmail", usuario.getEmail());
+        payloadData.put("id", usuario.getId().toString());
+        payloadData.put("isAdmin", usuario.getAdmin());
+        return payloadData;
+    }
 
-	public String generateToken(Usuario usuario) {
+    public String generateToken(Usuario usuario) {
 
-		Map<String, Object> payloadData = this.gerarPayload(usuario);
+        Map<String, Object> payloadData = this.gerarPayload(usuario);
 
-		return Jwts
-				.builder()
-				.setClaims(payloadData)
-				.setSubject(usuario.getNome())
-				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(new Date().getTime() + 3600000 * this.HORAS_EXPIRACAO_TOKEN))
-				.signWith(getSigningKey(), this.ALGORITMO_ASSINATURA)
-				.compact();
-	}
+        return Jwts.builder()
+                .setClaims(payloadData)
+                .setSubject(usuario.getEmail())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000 * jwtProperties.getExpiration()))
+                .signWith(getSigningKey(), ALGORITMO_ASSINATURA)
+                .compact();
+    }
 
-	private Claims extractAllClaims(String token) {
-		return Jwts
-				.parserBuilder()
-				.setSigningKey(getSigningKey())
-				.build()
-				.parseClaimsJws(token)
-				.getBody();
-	}
+    private Claims extractAllClaims(String token) {
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
 
-	public boolean isTokenValid(String token, UserDetails userDetails) {
-		final String username = extractUsername(token);
-		return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
-	}
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    }
 
-	private boolean isTokenExpired(String token) {
-		return extractExpiration(token).before(new Date());
-	}
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
 
-	private Date extractExpiration(String token) {
-		return extractClaim(token, Claims::getExpiration);
-	}
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
 
-	private Key getSigningKey() {
-		byte[] keyBytes = Decoders.BASE64.decode(this.SECRET_KEY);
-		return Keys.hmacShaKeyFor(keyBytes);
-	}
+    private Key getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 
-	public String extractUsername(String token) {
-		return extractClaim(token,Claims::getSubject);
-	}
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
 
-	public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-		final Claims claims = extractAllClaims(token);
-		return claimsResolver.apply(claims);
-	}
-
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
 }
