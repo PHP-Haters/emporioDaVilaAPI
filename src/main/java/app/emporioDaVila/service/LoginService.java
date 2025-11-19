@@ -2,6 +2,7 @@
 package app.emporioDaVila.service;
 
 import app.emporioDaVila.dto.LoginResponseDTO;
+import app.emporioDaVila.dto.UsuarioDTO;
 import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.entity.Login;
 import app.emporioDaVila.repository.LoginRepository;
@@ -39,13 +40,17 @@ public class LoginService {
 
 		String token = jwtService.generateToken(user);
 
+        UsuarioDTO userData = new UsuarioDTO(
+            user.getId(),
+            user.getNome(),
+            user.getEmail(),
+            user.getTelefone(),
+            user.getAdmin(),
+            user.getRole() != null ? user.getRole().toString() : null
+        );
+
 		return new LoginResponseDTO(
-				user.getId(),
-				user.getNome(),
-				user.getEmail(),
-				user.getTelefone(),
-				user.getAdmin(),
-				user.getRole() != null ? user.getRole().toString() : null,
+				userData,
 				token
 		);
 	}
