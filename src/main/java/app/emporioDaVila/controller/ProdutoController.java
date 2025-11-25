@@ -20,13 +20,13 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<String> save(@RequestBody @Valid Produto produto) {
         String result = this.produtoService.save(produto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<Produto>> findAll() {
         var result = produtoService.findAll();
@@ -51,13 +51,14 @@ public class ProdutoController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid Produto produtoUpdate) {
         produtoService.update(id, produtoUpdate);
         return new ResponseEntity<>("Produto atualizado com sucesso.", HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         produtoService.delete(id);
