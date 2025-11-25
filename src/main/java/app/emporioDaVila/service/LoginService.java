@@ -45,7 +45,6 @@ public class LoginService {
             user.getNome(),
             user.getEmail(),
             user.getTelefone(),
-            user.getAdmin(),
             user.getRole() != null ? user.getRole().toString() : null
         );
 

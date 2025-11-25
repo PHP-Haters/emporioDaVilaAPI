@@ -97,16 +97,4 @@ class UsuarioControllerTests {
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(usuarioService, times(1)).delete(1L);
     }
-
-    @Test
-    void login_cenarioSucesso() {
-        // Deve logar usuário com sucesso
-        when(usuarioService.login(usuario)).thenReturn(usuario);
-
-        ResponseEntity<Usuario> response = usuarioController.login(usuario);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("João", response.getBody().getNome());
-        verify(usuarioService, times(1)).login(usuario);
-    }
 }

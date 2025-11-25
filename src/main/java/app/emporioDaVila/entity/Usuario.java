@@ -46,30 +46,27 @@ public class Usuario implements UserDetails {
     // O campo 'email' será o username para o UserDetails
     private String email;
 
-    private Boolean admin;
-
     // Campo de papel/permissão que será usado pelo Spring Security
     private String role;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Endereco> enderecos = new ArrayList<>();
 
-    public Usuario(String nome, String senha, String telefone, String email, Boolean admin) {
+    public Usuario(String nome, String senha, String telefone, String email, String role) {
         this.nome = nome;
         this.senha = senha;
         this.telefone = telefone;
         this.email = email;
-        this.admin = admin;
+        this.role = role;
     }
 
     @PrePersist
     @PreUpdate
     public void prePersist() {
-        if (admin == null) {
-            admin = false;
+        // Define o papel com base no campo 'role'
+        if(this.role == null) {
+            this.role = "ROLE_USER";
         }
-        // Define o papel com base no campo 'admin'
-        this.role = admin ? "ROLE_ADMIN" : "ROLE_USER";
     }
 
     // --- Métodos da Interface UserDetails ---

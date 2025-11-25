@@ -12,6 +12,5 @@ public class UsuarioDTO {
     private String nome;
     private String email;
     private String telefone;
-    private boolean isAdmin;
     private String role;
 }

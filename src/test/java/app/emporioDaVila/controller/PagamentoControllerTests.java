@@ -1,5 +1,7 @@
 package app.emporioDaVila.controller;
 
+import app.emporioDaVila.config.JwtAuthenticationFilter;
+import app.emporioDaVila.config.JwtServiceGenerator;
 import app.emporioDaVila.entity.*;
 import app.emporioDaVila.entity.Enum.TipoPagamento;
 import app.emporioDaVila.service.PagamentoService;
@@ -9,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -25,6 +29,7 @@ import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class PagamentoControllerTests {
+
     @Mock
     private PagamentoService pagamentoService;
 
