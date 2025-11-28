@@ -13,6 +13,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 @RestController
 @RequestMapping("/usuario")
+@CrossOrigin("*")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;

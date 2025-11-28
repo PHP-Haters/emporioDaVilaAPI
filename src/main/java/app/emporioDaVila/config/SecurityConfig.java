@@ -24,9 +24,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig  {
-
-	///////////////////////////////////////////////////////
-
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http    
@@ -43,9 +40,6 @@ public class SecurityConfig  {
 
 		return http.build();
 	}
-
-	///////////////////////////////////////////////////////
-
 
 	@Autowired
 	private JwtAuthenticationFilter jwtAuthFilter;
@@ -68,8 +62,4 @@ public class SecurityConfig  {
 		bean.setOrder(-102);
 		return bean;
 	}
-	
-	
-
-
 }

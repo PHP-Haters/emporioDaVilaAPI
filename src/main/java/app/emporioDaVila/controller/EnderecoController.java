@@ -13,6 +13,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 @RestController
 @RequestMapping("/endereco")
+@CrossOrigin("*")
 public class EnderecoController {
 
     @Autowired
