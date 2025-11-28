@@ -1,48 +1,33 @@
 package app.emporioDaVila.entity;
-
 import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-// @SpringBootTest não é necessário pois, nesse caso,
-// o contexto inteiro da aplicação não precisa ser subido
 public class UsuarioTests {
-    @Test
-    void prePersist_cenario01() {
-        // Usuário com atributo admin nulo deve ser setado como false
 
-        // Arrange: criar usuário sem definir admin
+    @Test
+    void prePersist_deveDefinirRolePadrao() {
         Usuario usuario = new Usuario();
-        usuario.setNome("Gabriel");
+        usuario.setNome("João");
         usuario.setSenha("123456");
         usuario.setTelefone("11999999999");
-        usuario.setEmail("gabriel@example.com");
-        usuario.setAdmin(null);
+        usuario.setEmail("joao@example.com");
 
-        // Act: chamar o método @PrePersist
         usuario.prePersist();
 
-        // Assert: verificar se admin foi definido como false
-        assertNotNull(usuario.getAdmin(), "Admin não deve ser null após prePersist");
-        assertFalse(usuario.getAdmin(), "Admin deve ser false se não definido antes do persist");
+        assertEquals("ROLE_USER", usuario.getRole());
     }
 
     @Test
-    void prePersist_cenario02() {
-        // Usuário com admin true deve ser persistido assim
-
-        // Arrange: criar usuário com admin = true
+    void prePersist_naoDeveAlterarRoleSeJaDefinida() {
         Usuario usuario = new Usuario();
-        usuario.setNome("Admin");
+        usuario.setNome("Maria");
         usuario.setSenha("123456");
         usuario.setTelefone("11999999999");
-        usuario.setEmail("admin@example.com");
-        usuario.setAdmin(true);
+        usuario.setEmail("maria@example.com");
+        usuario.setRole("ROLE_ADMIN");
 
-        // Act
         usuario.prePersist();
 
-        // Assert: admin não deve mudar
-        assertTrue(usuario.getAdmin(), "Admin deve permanecer true se já definido");
+        assertEquals("ROLE_ADMIN", usuario.getRole());
     }
 }
