@@ -12,10 +12,12 @@ public class UsuariosDataLoader {
     @Bean
     CommandLineRunner initUsuariosDatabase(UsuarioService usuarioService) {
         return args -> {
-            Usuario admin = new Usuario("Admin", "$2a$10$xl4VocjQnVrw3.qWSuIgpurg4BoW0Voo2vZacUpPH1WwjY8SAEVcG", "45900000000", "admin@gmail.com", "ROLE_ADMIN");
+            // senha = admin
+            Usuario admin = new Usuario("Admin", "$2a$12$wKv.F56KNmOWsY9ohozbuuMUey6s5TMBB1A7zlgeBBXu9Om0X0XAu", "45900000000", "admin@gmail.com", "ROLE_ADMIN");
             usuarioService.saveUsuario(admin);
 
-            Usuario tester = new Usuario("John Doe", "$2a$10$u.EXiV5UftSNwDrT1krFUuyFN/L99EK7okSrVJU4vRpla6veyPMKy", "45900000000", "johnDoe@gmail.com", "ROLE_USER");
+            // senha = johnDoe
+            Usuario tester = new Usuario("John Doe", "$2a$12$rN4kDek4S3u9bcv6q1ML9.jsAILz6Wx4Hdu5kwZ3Ld3Mi2Becx1ry", "45900000000", "johnDoe@gmail.com", "ROLE_USER");
             usuarioService.saveUsuario(tester);
         };
     }
