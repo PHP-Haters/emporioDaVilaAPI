@@ -2,23 +2,29 @@ package app.emporioDaVila.service;
 
 import app.emporioDaVila.ExceptionHandlers.GenericExceptions;
 import app.emporioDaVila.entity.Usuario;
-import app.emporioDaVila.entity.Usuario;
 import app.emporioDaVila.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public String saveUsuario(Usuario novoUsuario){
         try {
+            // criptografar senha
+            String hashed = passwordEncoder.encode(novoUsuario.getSenha());
+            novoUsuario.setSenha(hashed);
+
             this.usuarioRepository.save(novoUsuario);
             return "Usuário salvo com sucesso.";
         }
@@ -63,7 +69,8 @@ public class UsuarioService {
         }
 
         if (novoUsuario.getSenha() != null) {
-            update.setSenha(novoUsuario.getSenha());
+            // recript se a senha for atualizada
+            update.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
         }
 
         if (novoUsuario.getTelefone() != null) {
@@ -83,6 +90,9 @@ public class UsuarioService {
     }
     public Usuario login(Usuario usuario) {
         Usuario foundUser = usuarioRepository.findByEmail(usuario.getEmail()).orElseThrow(() -> new GenericExceptions.NotFound("Usuário não encontrado."));
+
+        // verifica senha
+        boolean senhaCorreta = passwordEncoder.matches(usuario.getSenha(), foundUser.getSenha());
 
         if (foundUser.getSenha().equals(usuario.getSenha())) {
             foundUser.setSenha(null);
