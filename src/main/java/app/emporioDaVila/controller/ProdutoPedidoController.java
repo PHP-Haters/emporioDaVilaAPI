@@ -12,7 +12,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @RestController
-@RequestMapping("/produtoPedidoPedido")
+@RequestMapping("/produto-pedido")
 @CrossOrigin("*")
 public class ProdutoPedidoController {
 
