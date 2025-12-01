@@ -45,6 +45,17 @@ public class ProdutoPedidoService {
         }
     }
 
+    public List<ProdutoPedido> findByPedido(Integer idPedido) {
+        List<ProdutoPedido> produtoPedidos = produtoPedidoRepository.findByPedido(idPedido);
+        if (produtoPedidos.isEmpty()) {
+            throw new GenericExceptions.General(
+                    "Não existem produtos deste pedido cadastrados."
+            );
+        } else {
+            return produtoPedidos;
+        }
+    }
+
     public ProdutoPedido findById(Integer id) {
         return produtoPedidoRepository.findById(id)
                 .orElseThrow(() -> new GenericExceptions.NotFound("Produto do pedido não encontrado."));

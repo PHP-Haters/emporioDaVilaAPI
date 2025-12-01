@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @SuppressWarnings("unused")
+@RestController
+@RequestMapping("/pedido")
 public class PedidoController {
 
     @Autowired
@@ -33,6 +35,12 @@ public class PedidoController {
     @GetMapping("/{id}")
     public ResponseEntity<Pedido> findById(@PathVariable Integer id) {
         var result = pedidoService.findById(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PostMapping("/estado")
+    public ResponseEntity<Pedido> findByEstadoAndIdUsuario(@RequestBody Pedido pedido) {
+        var result = pedidoService.findByEstadoAndUsuario(pedido);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

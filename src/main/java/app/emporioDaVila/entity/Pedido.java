@@ -32,4 +32,11 @@ public class Pedido {
     private Long idUsuario;
 
     private Boolean estado;
+
+    @PrePersist
+    public void prePersist() {
+        if (estado == null) {
+            estado = true;
+        }
+    }
 }

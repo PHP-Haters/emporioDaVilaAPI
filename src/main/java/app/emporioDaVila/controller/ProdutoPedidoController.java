@@ -12,7 +12,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @RestController
-@RequestMapping("/produtoPedidoPedido")
+@RequestMapping("/produtoPedido")
 public class ProdutoPedidoController {
 
     @Autowired
@@ -28,6 +28,12 @@ public class ProdutoPedidoController {
     public ResponseEntity<List<ProdutoPedido>> findAll() {
             var result = produtoPedidoService.findAll();
             return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/pedido/{id}")
+    public ResponseEntity<List<ProdutoPedido>> findByPedido(@PathVariable Integer id) {
+        var result = produtoPedidoService.findByPedido(id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

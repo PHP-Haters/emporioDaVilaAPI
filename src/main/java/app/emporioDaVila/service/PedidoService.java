@@ -2,10 +2,9 @@ package app.emporioDaVila.service;
 
 
 import app.emporioDaVila.ExceptionHandlers.GenericExceptions;
+import app.emporioDaVila.ExceptionHandlers.PedidoExceptions;
 import app.emporioDaVila.entity.Pedido;
-import app.emporioDaVila.entity.Produto;
 import app.emporioDaVila.repository.PedidoRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -19,6 +18,11 @@ public class PedidoService {
     private PedidoRepository pedidoRepository;
 
     public String save(Pedido pedido) {
+        if(findByEstadoAndUsuario(pedido) != null) {
+            throw new PedidoExceptions.PedidoJaEmAndamento(
+                    "Já há um pedido em andamento."
+            );
+        }
         try {
             pedidoRepository.save(pedido);
             return "Pedido salvo com sucesso";
@@ -49,6 +53,16 @@ public class PedidoService {
     public Pedido findById(Integer id) {
         return pedidoRepository.findById(id)
                 .orElseThrow(() -> new GenericExceptions.NotFound("Pedido não encontrado."));
+    }
+
+    public Pedido findByEstadoAndUsuario(Pedido pedidoACheckar) {
+        Pedido pedido = pedidoRepository.findByEstadoAndIdUsuario(pedidoACheckar.getEstado(), pedidoACheckar.getIdUsuario());
+        if(pedido == null) {
+            return null;
+        }
+        else {
+            return pedido;
+        }
     }
     
     public Pedido updateState(Integer id, Pedido novoPedido) {
